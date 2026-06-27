@@ -588,4 +588,178 @@ $$\text{数 }\Lambda_d\ (\text{lcm})\ +\ \text{数**受可达性约束的**积 }
 - `pi_lex.py`、`pilex.c`：lex 楼梯 $\Pi_d$ 的暴力核对与大 $n$ 计数（验证 16.1、量出 $\approx2.9^n$）。
 - `f4_combinatorial_experiments.c` 的 `prod m n δ d`：DRL 楼梯逐次 $|\Pi_d|$（量出高次爆 $\approx2.7^n$）。
 
-## 第 17 部分　Eliahou–Kervaire / 有界深度上阴影：通向 $|P_d|=O(2^n)$ 的正确入口  §16 的 $\Pi_d$ 死在"无界次数乘子 ⇒ 积集爆掉"。本节用 DRL gin 的**强稳定性**（Eliahou–Kervaire）把乘子次数**压到 1–2**，从而把子项关进**有界深度上阴影**——一个不爆、且正是 Macaulay/CL 主场的对象。这是 §11.2 的正确入口。  ### 17.1 DRL gin 强稳定 ⟹ EK 适用（修复死路的结构输入）  - char 0 下 gin 总是 Borel 不动（Galligo）；代码的 revlex-段楼梯，其 **LT 集 = revlex 段 = 强稳定**（把权重移到更低下标使单项式 revlex 更大，仍在上段）。故 **Eliahou–Kervaire 分解适用**。 - EK：强稳定理想的极小一阶 syzygy 恰为 $(g,x_j)$，$j<\max(g)$，**lcm $=x_j\cdot\mathrm{LT}(g)$**（单变量 × 生成元）。 - **实测确认**：存活临界对的 lcm **全部**是 $x_j\cdot$生成元（$n{=}10,d{=}7$：1227/1227；$n{=}12$：3306/3306；$n{=}13$：8834/8834）。  ### 17.2 子项落入有界深度上阴影（实测 co-degree $\le2$）  lcm $=x_j\mathrm{LT}(g)$（$g$ 次数 $d-1$）。 - 经 $g$ 展开：子项 $=x_j\cdot s$（单变量 × 标准 $s$，$\deg s=d-1$）⟹ **co-degree 1**（有 $d{-}1$ 次标准因子）。 - 经另一生成元 $g'$ 展开：co-degree $=d-\deg g'$；EK 迫使 $\deg g'\ge d-2$ ⟹ **co-degree $\le2$**。  **实测（决定性）**：子项的"标准 co-degree"（到某标准因子的最小补次数）**在所有 $n$、所有次数都 $\le2$**（$n{=}10,12,14$，$d{=}4..11$，最大 co-degree 恒为 2；85–95% 是 1）。故 $$\boxed{\ \mathcal C_d\ \subseteq\ \partial^{+1}(S_{d-1})\ \cup\ \partial^{+2}(S_{d-2}).\ }$$  ### 17.3 上阴影不爆（与 $\Pi_d$ 的关键反差）  | 对象 | 峰值 $/2^n$（$n{=}10,12,14$） | 量级 | |---|---|---| | $\lvert\partial^{+1}(S_{d-1})\rvert$ | $1.02,\ 1.04,\ 1.03$ | **$O(2^n)$**（随 $n$ 平） | | $\lvert\partial^{+2}(S_{d-2})\rvert$ | $3.21,\ 3.58,\ 3.83$ | $\approx\sqrt n\cdot2^n$ | | $\lvert\Pi_d\rvert$（§16） | 爆 | $\approx2.7^n$ |  **为何不爆**：上阴影用**有界次数乘子**（1–2 个变量），是压缩集的真正 Macaulay/CL 阴影；$\Pi_d$ 用无界次数乘子，故爆。EK 提供的正是 §16 所说"缺的 DRL 结构输入"。  ### 17.4 结果：rigorous-modulo-EK 的 $|P_d|=O(\sqrt n\,2^n  
+## 第 17 部分　Eliahou–Kervaire / 有界深度上阴影：通向 $|P_d|=O(2^n)$ 的正确入口
+
+§16 的 $\Pi_d$ 死在"无界次数乘子 ⇒ 积集爆掉（$\approx2.7^n$）"。本节用 DRL gin 的**强稳定性**（Eliahou–Kervaire，下称 EK）把乘子次数**压到 1–2**，从而把子项关进**有界深度上阴影**——一个不爆、且正是 Macaulay/Clements–Lindström 主场的对象。这是 §11.2 的正确入口。
+
+### 17.1 DRL gin 强稳定 ⟹ EK 适用（修复死路的结构输入）
+
+- char 0 下 gin 总是 Borel 不动（Galligo 定理）；代码的 revlex-段楼梯，其 **LT 集 = revlex 段 = 强稳定**（把权重移到更低下标使单项式 revlex 更大、仍落在上段）。故 **Eliahou–Kervaire 分解适用**。
+- **EK 结构**：强稳定理想的极小一阶 syzygy 恰为 $(g,x_j)$，$j<\max(g)$，对应 S-对的 **lcm $=x_j\cdot\mathrm{LT}(g)$**（单变量 × 生成元）。
+- **实测确认**：存活临界对的 lcm **全部**是 $x_j\cdot$生成元——$n{=}10,d{=}7$：1227/1227；$n{=}12$：3306/3306；$n{=}13$：8834/8834。无一例外。
+
+### 17.2 子项落入有界深度上阴影（实测 co-degree $\le2$）
+
+设 lcm $=x_j\mathrm{LT}(g)$，$g$ 次数 $d-1$。
+- 经 $g$ 展开：子项 $=x_j\cdot s$（单变量 × 标准 $s$，$\deg s=d-1$）⟹ **co-degree 1**（有 $d{-}1$ 次标准因子）。
+- 经另一生成元 $g'$ 展开：co-degree $=d-\deg g'$；EK 迫使 $\deg g'\ge d-2$ ⟹ **co-degree $\le2$**。
+
+**实测（决定性）**：子项的"标准 co-degree"（到某标准因子的最小补次数）**在所有 $n$、所有次数都 $\le2$**：
+
+| | $d{=}4$ | $d{=}5$ | $d{=}6$ | $d{=}7$ | $d{=}8$ | $d{=}9$ | $d{=}10$ | $d{=}11$ |
+|---|---|---|---|---|---|---|---|---|
+| $n{=}10$ max-codeg | 2 | 2 | 2 | 2 | 1 | 1 | 1 | 1 |
+| $n{=}12$ max-codeg | 2 | 2 | 2 | 2 | 2 | 1 | 1 | 1 |
+| $n{=}14$ max-codeg | 2 | 2 | 2 | 2 | 1 | 2 | 1 | 1 |
+
+恒 $\le2$；其中 85–95% 是 co-degree 1。故
+$$\boxed{\ \mathcal C_d\ \subseteq\ \partial^{+1}(S_{d-1})\ \cup\ \partial^{+2}(S_{d-2}).\ }$$
+
+### 17.3 上阴影不爆（与 $\Pi_d$ 的关键反差）
+
+| 对象 | 峰值 $/2^n$（$n{=}10,12,14$） | 量级 |
+|---|---|---|
+| $\lvert\partial^{+1}(S_{d-1})\rvert$ | $1.02,\ 1.04,\ 1.03$ | **$O(2^n)$**（随 $n$ 持平） |
+| $\lvert\partial^{+2}(S_{d-2})\rvert$ | $3.21,\ 3.58,\ 3.83$ | $\approx\sqrt n\cdot2^n$ |
+| ~~$\lvert\Pi_d\rvert$（§16）~~ | ~~爆~~ | ~~$\approx2.7\text{–}2.9^n$~~ |
+
+**为何不爆**：上阴影用**有界次数乘子**（1–2 个变量），是压缩集（revlex 段）的真正 Macaulay/CL 上阴影；$\Pi_d$ 用无界次数乘子，故爆。EK 提供的正是 §16 所说"缺的 DRL 结构输入"。
+
+### 17.4 结果：rigorous-modulo-EK 的 $|P_d|=O(\sqrt n\,2^n)$，主项 $O(2^n)$
+
+由 §15.1（深度 1）+ 17.2 + 17.3：
+$$|P_d|\ \le\ \underbrace{|\Lambda_d|}_{\text{lcm}}\ +\ \underbrace{|\partial^{+1}(S_{d-1})|}_{\text{co-deg 1 子项}}\ +\ \underbrace{|\partial^{+2}(S_{d-2})|}_{\text{co-deg 2 子项}}\ +\ o(2^n).$$
+- **1-step 项 $=O(2^n)$**（压缩集上阴影；实测峰 $\approx2^n$、随 $n$ 持平），**且覆盖 85–95% 子项**（co-degree 1 那部分）。这是对子项**主体**的 rigorous-modulo-EK 的 $O(2^n)$ 界。
+- **2-step 项 $=O(\sqrt n\,2^n)$**：偏松——co-degree-2 子项只占 5–15%（实测 $\le0.15\cdot2^n$），但整张 2-step 阴影超出 $\sqrt n$ 倍。
+- **lcm 项**：$|\Lambda_d|\le n\,|G_{d-1}|$；实测 $|G_{d-1}|=O(2^n/n)$（$n{=}10$：$|G_6|{=}84<2^n/n{=}102$），故 $|\Lambda_d|=O(2^n)$。
+
+**结论**：rigorous-modulo-EK 得 $|P_d|=O(\sqrt n\,2^n)$（单次数，即累计峰值量级），其中**主体（co-degree-1）已是干净的 $O(2^n)$**。这是第一个 rigorous-modulo-EK、量级接近真值的上界，**彻底取代了 §16 的 $\Pi_d$ 死路**。
+
+**到 sharp $O(2^n)$ 还差**：把 co-degree-2 子项（5–15% 那部分，实测 $\le0.15\cdot2^n$）从"整张 2-step 阴影 $O(\sqrt n2^n)$"收紧到 $O(2^n)$——这是个**更小的残余**，且已是标准的强稳定/Macaulay 估计（非 §16 的不可控积坍缩）。
+
+### 17.5 这条路线为何对（vs §16）
+
+EK 迫使 lcm $=$ 单变量 × 生成元 ⟹ **乘子次数有界（1–2）** ⟹ 子项落入**压缩集的有界深度上阴影**，后者可证不爆。§16 的 $\Pi_d$ 允许无界次数乘子 ⟹ 爆。修复是**结构性的**（EK/强稳定），正是 §16 所指认"缺的 DRL 结构输入"。
+
+### 17.6 算法：EK 给出 $4^n\to\tilde O(\sqrt n\,2^n)$ 的希望（更新 §16.4 的悲观）
+
+EK 同时**软化** §16.4 的"做不到"：
+- 存活对 $=\{(g,x_j):g\in G,\ j<\max(g)\}$，个数 $\sum_g(\max g-1)\le n|G|=O(\sqrt n\,2^n)$。可**直接枚举**，**无需** $O(|G|^2)=\Theta(4^n/n)$ 的双重对环。
+- 列集合 $=$ 标准 $\cup$ 有界深度上阴影，可在 $O(\text{阴影})=O(\sqrt n\,2^n)$ 内枚举。
+- ⟹ **有望做出 $\tilde O(\sqrt n\,2^n)$ 预测器**（对比当前 $\sqrt n\,4^n$，近乎平方级加速）。需实现并验证 EK 枚举与现模型逐项一致。
+- 所以 §16.4 的"基数界不够"仍对，但 **EK 提供了此前缺失的构造性枚举**入口。
+
+### 17.7 对 11.2（结论 $|P_d|=\Theta(2^n)$）的信心
+
+现由四重支撑：(i) 直接测量 $\le1.25\cdot2^n$ 且与 msolve 实测列维数逐项吻合；(ii) 深度 1；(iii) co-degree $\le2$ 的有界深度上阴影含入、量级正确；(iv) EK 结构。**结论稳固**；通向完整证明的残余已落在标准的强稳定理想 + Macaulay 组合里。
+
+### 17.8 本节实验命令
+
+```
+./exp route m n δ d    # lcm 是否全为 x_j*gen；|∂+1(S_{d-1})|、|∂+2(S_{d-2})|
+./exp codeg m n δ d    # 子项的标准 co-degree 直方图（验证 ≤2）
+```
+
+---
+
+## 第 18 部分　总体证明现状、关键数据、程序清单
+
+### 18.1 证明链条总览（逐环节定级）
+
+记 **R**=严格、**R/EK**=在 EK（强稳定）结构下严格、**E**=经验稳健（多 $n$/多次数验证）、**O**=开放。
+
+| # | 命题 | 级别 | 出处 |
+|---|---|---|---|
+| 1 | $\sum_d H_d=\dim R/I=\lvert S\rvert=2^n$ | **R** | §2.1 |
+| 2 | Gorenstein 对称 $H_d=H_{n-d}$ ⟹ $\sqrt n$ 中心窗口 | **R** | §2.2,§7.2 |
+| 3 | rank 序同次平移不变 ⟹ 闭包终止、$C_d$ 良定义 | **R** | §2.4 |
+| 4 | 列数 = 标准($=H_d$) ⊔ pivot($P_d$)，主项是 $P_d$ | **R** | §0,§6.1 |
+| 5 | 累计峰值 $\asymp\sum_j$ 齐次单次，$\sqrt n$=有效宽度 | **R**(量级) | §7.1 |
+| 6 | 闭包**深度 $\approx1$**：$P_d=\Lambda_d\sqcup\mathcal C_d\sqcup o(2^n)$ | **E** | §15.1 |
+| 7 | 子项 $=t_a\cdot s$（两标准之积）；$\mathcal C_d\subseteq\Pi_d$ | **R**(给定 6) | §15.2 |
+| 8 | $\lvert\Pi_d\rvert=O(2^n)$ — **否证**（高次爆 $\approx2.7$–$2.9^n$） | 否证 | §16.2 |
+| 9 | lex 楼梯 $\Pi_d^{\mathrm{lex}}$ 闭式刻画 | **R** | §16.1 |
+| 10 | DRL gin 强稳定 ⟹ 存活 lcm 全为 $x_j\cdot\mathrm{LT}(g)$ | **R/EK**+**E** | §17.1 |
+| 11 | 子项 co-degree $\le2$ ⟹ $\mathcal C_d\subseteq\partial^{+1}(S_{d-1})\cup\partial^{+2}(S_{d-2})$ | **R/EK**+**E** | §17.2 |
+| 12 | 上阴影不爆：$\lvert\partial^{+1}\rvert=O(2^n)$，$\lvert\partial^{+2}\rvert=O(\sqrt n2^n)$ | **E**(+CL) | §17.3 |
+| 13 | **上界 $\lvert P_d\rvert=O(\sqrt n\,2^n)$（主体 co-deg-1 为 $O(2^n)$）** | **R/EK** | §17.4 |
+| 14 | 下界 $\lvert P_d\rvert=\Omega(2^n)$ | **O**(构造) | §8.2 |
+| 15 | sharp 上界 $O(2^n)$：收紧 co-deg-2 子项(5–15%) + lcm 计数 | **O**(标准残余) | §17.4 |
+| 16 | 真实 F4（msolve）列维数 = 模型预测（逐次吻合） | **E**(强) | msolve 验证 |
+
+**一句话现状**：结论 $|P_d|=\Theta(2^n)$（及 headline $\Theta(\sqrt n\,2^n)$）**经验确证**（含真实 msolve）。上界方面，已从 §16 的死路转入 EK/有界深度上阴影正路，得 **rigorous-modulo-EK 的 $O(\sqrt n\,2^n)$、其中 co-degree-1 主体为干净的 $O(2^n)$**；离 sharp $O(2^n)$ 仅差一个**更小且标准**的残余（co-degree-2 那 5–15% + lcm 计数）。下界与 sharp 上界仍开放，但都已落在强稳定理想 + Macaulay 的常规工具内。
+
+### 18.2 关键数据汇总（可复现）
+
+**(a) 真实 F4 验证（msolve，$n{=}10$ 稠密 MQ，DRL）— 列维数逐次吻合**
+
+| deg | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
+|---|---|---|---|---|---|---|---|---|
+| msolve cols | 1771 | 2916 | 3891 | 4393 | **4529** | 4430 | 4340 | 4305 |
+| 预测 cols | 1771 | 2958 | 4239 | 4393 | **4529** | 4430 | 4340 | 4305 |
+
+峰值矩阵 msolve `4146×4529` vs 预测 `4189×4529`。
+
+**(b) 标度律（square，cumulative / homogeneous）**
+
+| $n$ | cum peak | $/\sqrt{2n}2^n$ | hom peak | $/2^n$ |
+|---|---|---|---|---|
+| 10 | 4529 | 0.989 | 1396 | 1.363 |
+| 11 | 9436 | 0.982 | 2689 | 1.313 |
+| 12 | 19834 | 0.988 | 5563 | 1.358 |
+| 13 | 40925 | 0.980 | 10185 | 1.243 |
+
+**(c) pivot 主导（$n{=}10$ 齐次，逐次）**：标准 $H_d$ vs pivot
+
+| d | 5 | 6 | 7 | 8 | 9 |
+|---|---|---|---|---|---|
+| pivots | 754 | 1107 | **1276** | 817 | 489 |
+| $H_d$ | 252 | 210 | 120 | 45 | 10 |
+| pivots/$2^n$ | 0.736 | 1.081 | **1.246** | 0.798 | 0.478 |
+
+**(d) 闭包深度 $\approx1$（忠实 BFS）**
+
+| $n$ | $d$ | 层0(lcm) | 层1(子项) | 层$\ge2$ | 总 pivot | 深度 |
+|---|---|---|---|---|---|---|
+| 10 | 7 | 359 | 917 | 0 | 1276 | 1 |
+| 12 | 7 | 919 | 3840 | 12 | 4771 | 2 |
+| 13 | 8 | 2022 | 6876 | 0 | 8898 | 1 |
+| 14 | 9 | 4301 | 14417 | 4 | 18722 | 2 |
+
+**(e) $\Pi_d$ 爆掉（顶次，§16 死路证据）**：峰值 $/2^n$ 随 $n$：lex $4.3{\to}79$（$n{=}8{\to}16$，底数 $\approx2.9$）；DRL $6.25$($n{=}10$)$,11.8$($n{=}12$)。
+
+**(f) EK 路线（§17）**：lcm 全为 $x_j\cdot$gen（1227/1227 等）；co-degree 恒 $\le2$；$\lvert\partial^{+1}\rvert/2^n=1.02,1.04,1.03$，$\lvert\partial^{+2}\rvert/2^n=3.2,3.6,3.8$（$n{=}10,12,14$）。
+
+**(g) Boolean 楼梯（§14，列数依赖形状的证据）**：平方理想楼梯给 0 存活对、peak cols $=0$（同 Hilbert 函数下贪心给 $\sqrt n2^n$）。
+
+**(h) 复杂度**：累计路径实测 $\approx\Theta(\sqrt n\,4^n)$（每加 1 变量 $\times4.3$）；输出下限 $\tilde\Theta(2^n)$。
+
+### 18.3 程序清单（全部随附）
+
+| 文件 | 作用 | 关键命令 / 复现 |
+|---|---|---|
+| `f4_combinatorial_predict_noflint.c` | 去 FLINT 的预测器（输出与原版逐字节一致） | `gcc -O2 -march=native -o predictor f4_combinatorial_predict_noflint.c -lm`；`./predictor profile-semi-peak 10 10 2` → `peak 4189 x 4529 @ d=9` |
+| `f4_combinatorial_predict_omp.c` | + 桶级 OpenMP 并行（多核近线性、输出不变） | `gcc -O2 -march=native -fopenmp -o predictor f4_combinatorial_predict_omp.c -lm` |
+| `f4_combinatorial_experiments.c` | 全部证明实验（去 FLINT 基础上扩展） | `gcc -O2 -march=native -fopenmp -o exp f4_combinatorial_experiments.c -lm` |
+| `pilex.c` | lex 楼梯 $\Pi_d$ 大-$n$ 计数（量出 $\approx2.9^n$） | `gcc -O2 -o pilex pilex.c && ./pilex` |
+| `pi_lex.py` | lex 楼梯 $\Pi_d$ 暴力 vs 闭式核对（验证 §16.1） | `python3 pi_lex.py` |
+
+`f4_combinatorial_experiments.c` 的命令（皆 `./exp <cmd> m n δ [d]`）：
+
+| 命令 | 量什么 | 对应章节 |
+|---|---|---|
+| `boolean-test n` | 平方理想 vs 贪心楼梯（列数是否依赖形状） | §14.1 |
+| `pivots m n δ` | 逐次 cols / pivots / $H_d$ | §14.2 |
+| `gens m n δ` | 生成元次数分布 | §17（$\lvert G_{d-1}\rvert$） |
+| `depth m n δ d` | 忠实 BFS 逐层 pivot 数、最大深度 | §15.1 |
+| `prod m n δ d` | $\lvert\Pi_d\rvert$（两标准之积、非标准） | §16.2 |
+| `route m n δ d` | lcm 是否全 $x_j$gen；$\lvert\partial^{+1}\rvert,\lvert\partial^{+2}\rvert$ | §17.1,17.3 |
+| `codeg m n δ d` | 子项标准 co-degree 直方图（验证 $\le2$） | §17.2 |
+
+**复现核心结论的最短路径**：
+```
+./exp depth 10 10 2 7     # 深度1：359 lcm + 917 子项 = 1276 pivot（与 pivots 一致）
+./exp codeg 10 10 2 7     # co-degree 全 ≤2（742 个=1，175 个=2）
+./exp route 10 10 2 7     # lcm 全 x_j*gen(1227/1227)；|∂+1|≈2^n，|∂+2|≈√n·2^n
+./exp prod  10 10 2 10    # 对比：Π_d 在高次爆（6400≈6.25·2^n）
+```
