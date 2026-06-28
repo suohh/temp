@@ -1038,3 +1038,541 @@ $$\text{co-degree}\le2\ \Longleftrightarrow\ m_1=x_j\LT(g_a)/x_M\ \text{或}\ m_
 注意他们的 $\sum_{k=0}^2$ 是 **$x_n$-次数**宽 3 的窗（约化子计数），与我们的 **co-degree ≤2**（总次数 2 步内有标准因子）**精神相同但不是同一个量**——他们没直接证我们的 L2′。但其 Gorenstein 对偶 + 截断方法是证 L2′（至少上半区）的正路。
 
 **小结**：那篇文章和我们高度相关、互补。它严格化了我们的种子结构（A），给了上半区楼梯显式形状这件攻命题 \ref{prop:l2red} 的利器（B），而我们的支撑界比它的列界紧一个指数因子、能反过来改进它的复杂度（C）。下一步最该做的：用其 `thm_card_bdg_deg_moitMB` 的 $x_n^pm$ 刚性形状，证 generic CI 楼梯在上半区的"近因子"性质（= 命题 \ref{prop:l2red} 上半区），仿射峰恰在此区。
+
+---
+
+## 第 27 部分　用 Kouba–Neiger–Safey 的方法对接命题——拿到一块严格结果，但未完成
+
+回答前两问，再给第三问的认真尝试。
+
+### 27.1 只证上半区够吗？"仿射峰在上半区"要证吗？
+
+- **够。** F4 复杂度由**最大矩阵（仿射峰）**主导。若仿射峰在上半区且其支撑被上半区 L2′ 界住，则所有矩阵 ≤ 峰 ≤ poly·2ⁿ，复杂度即得。下半区的齐次逐次列数更小、不绑定。
+- **"峰在上半区"本身要证**，目前是经验（$d^\*\approx D-2\sim D-3$，$D=n+1$；n=10/12/14 峰在 $d=9/10/12$）。干净推导我没有——仿射剖面峰位置需单独论证。**所以"只证上半区"合法，但前提是先证峰在上半区。**
+
+### 27.2 用他们的方法：拿到 $x_n$-高度公式（严格、新）
+
+他们两个结果（都在 MS 下证了）正好能用：
+1. **`thm_card_bdg_deg_moitMB`**：上半区次数 $d'$ 的顶变量生成元**恰为** $x_n^{2d'-D}m$，$m$ 是 $A:=\K[x_1,\dots,x_{n-1}]$ 的标准单项式。
+2. **约化子窗**：上半区（$d\ge \dprev+2$）**每个**约化子顶变量都是 $x_n$（$\nu_i=0,\ i<n$！），且 $\deg_{x_n}\in[2d-D-2,\,2d-D]$。
+
+由 (1) 得**关键引理（新）**：对 $A$ 中标准单项式 $w$（$2\deg w<D$），其 **$x_n$-高度**
+$$\alpha(w):=\min\{k:x_n^kw\in J\}=D-2\deg w.$$
+（因 $x_n^{D-2\deg w}w$ 恰是上半区生成元，极小性给 $x_n^{D-2\deg w-1}w$ 标准。）
+
+由此 + 窗（窗等价于 $e-\alpha(w)\in\{0,1,2\}$）得**严格命题**：
+
+> 上半区列 $c=x_n^e w$，若 **$w$ 在 $A$ 中标准**，则 codeg$(c)\le2$。
+> （$e=\alpha$：生成元，codeg 1；$e=\alpha{+}1$：$c/x_n^2$ 标准；$e=\alpha{+}2$：$c/(x_nx_a)$ 标准，用 $\alpha(w/x_a)=\alpha(w){+}2$。）
+
+数值：上半区列里 $w$ 标准的占 ~27–51%。**这一块严格证完了**（已进 tex）。
+
+### 27.3 归纳的障碍——为什么没完成
+
+剩下 $w$ **非标准**的多数列（~50–73%）。本想归纳：对 $n-1$ 变量用 L2′，给 $w$ 一个 $\ge\deg w-2$ 次的标准 $A$-因子 $w'$，再抬回（$x_n^ew'$ 或 $x_n^{e-1}w'$）得 $c$ 的 $d-2$ 次标准因子。代数我都验过，**能闭合——前提是 $w$ 是 $(n-1)$ 变量问题的可达列**（L2′ 只对可达列成立）。两个事实卡住：
+
+1. **次数错位**：高度映射把 $n$ 变量 $d$ 次送到 $(n-1)$ 变量 $\deg w\in\{D-d,D-d+1,D-d+2\}$ 次。**靠近顶部**（$d\approx D$）才低；仿射峰 $d\approx D-2$ 处 $\deg w\approx 2\text{–}5$。
+2. **基例只到 3 次**（实测，决定性）：**所有**非标准单项式 codeg ≤2 **仅在次数 ≤3 成立**；**4 次起就有 codeg ≥3 的单项式**（只是永不被可达）。
+
+所以归纳**绕不开可达性**——必须证"截断把可达列映到可达列"这条相容性，我没建立。**这就是用他们的机器证仿射峰 L2′ 的精确残余障碍。**
+
+### 27.4 诚实小结
+
+- **新的严格成果**：$x_n$-高度公式 $\alpha(w)=D-2\deg w$，及由它+他们的窗得到的"$w$ 标准 ⟹ codeg ≤2"（上半区一整块）。这是用他们方法对接后**真正推进**的部分，已写进 tex。
+- **未完成**：$w$ 非标准的多数列归约到 $(n-1)$ 变量 L2′，卡在**可达性相容**（基例只到 3 次，4 次起必须可达）。
+- 路线明确：证截断的可达性相容 + 仿射峰在上半区，即可（经他们机器）拿下仿射峰 L2′。这仍是独立工作量，但障碍已缩到一条具体相容性命题。
+
+---
+
+## 第 28 部分　Dixon 组合方法（lattice path）能不能用？——不能直接用，但磨出了更干净的归约
+
+看了 Dixon 矩阵大小的组合证明（迭代单纯形 + 格路计数）。结论：**不能直接搬**，但顺带把归纳变干净了。
+
+### 28.1 Dixon 方法是什么
+Dixon 矩阵支撑 = **迭代单纯形** $I_{d_2-1,\dots,d_n-1}$ 的单项式数，其支撑由**嵌套前缀和**约束 $\sum_{l=n-j+1}^n\alpha_l\le\sum_{i=1}^j(d_{n-i+1})$ 给出，再用格路（在分段线性边界下）数 = 行列式 / Fuss–Catalan。$n$ 个二次的 Dixon 矩阵 ~ Catalan 数 ~ $4^n$。核心招式：**把矩阵支撑写成嵌套前缀和多胞形，格路计数**。
+
+### 28.2 能不能搬到 F4 支撑？——不能
+试了：F4 标准集是不是这种嵌套前缀和多胞形？**实测否**。$\{\alpha:\alpha_k+2\sigma_{k-1}\le b_k\}$（各种 $b_k$）数出来是 $12,32,105,264,798$，**都不是 $2^n$**。根本原因：F4 标准集基数 $2^n$，**不是**格路（分段线性边界下）的计数（那类给 Catalan 型 $4^n$）。所以 Dixon 的迭代单纯形/格路框架对 F4 支撑不直接适用。
+
+### 28.3 但磨出了干净东西：$x_n$-高度公式无条件 + 精确归约
+试 Dixon 嵌套结构时，验证了一个**干净事实**：
+$$\alpha(w)=D-2\deg(w)\quad\text{对截断的**所有**标准 }w\text{（实测 }n=8,10,12\text{ 全次数）}.$$
+原因：截断是 $n$ 个二次在 $n-1$ 变量的**超定**系统，socle ≈ $n/2<D/2$，所以"$2\deg w<D$"自动成立。**这把 tex 里的高度引理升级成无条件**（覆盖所有 $w$-标准列，不只一片）。
+
+由此得**精确双向归约**（已进 tex）：上半区列 $c=x_n^ew$（$w$ 非标准），
+$$\mathrm{codeg}(c)\le2\iff \mathrm{codeg}_{\text{截断}}(w)\le2.$$
+即"$n$ 变量上半区 L2′" **等价于**"截断（$n$ 个二次在 $n-1$ 变量）的 L2′"。归纳现在是**精确**的，不再是单向。
+
+### 28.4 缺口没变，但更聚焦
+归纳唯一缺的还是：**截断把可达列映到可达列**（因为 codeg ≤2 对一般 ≥4 次单项式失败，必须可达）。试图直接算截断可达集做验证，但**超定系统的楼梯**要 lex 型构造、我的 CI 代码建不了（greedy revlex 在超定 Hilbert 下 cand<H_e 崩），没测成。
+
+**诚实小结**：Dixon 方法不直接适用（标准集非嵌套多胞形）。但它逼我验证了高度公式无条件、并把归纳写成精确等价 $\mathrm{codeg}(c)\le2\iff\mathrm{codeg}_{\text{截断}}(w)\le2$。整个开问题现在 = **一条截断可达性相容命题**，比之前更聚焦。下一步要么给超定楼梯写 lex 构造去实测相容性，要么从 KNS 的 `thm_semieregseq_macmat`（截断 GB = GB 的截断）推可达集层面的相容。
+
+---
+
+## 第 29 部分　把"截断可达性相容"写成独立引理 + 形象例子 + 推进（验证成立，未证）
+
+### 29.1 相容性引理（独立陈述）
+记 $R_n$ = $n$ 变量 generic CI 的**可达列**集（出现在某个 F4 矩阵里的单项式：标准单项式 + 极小生成元 + 中间 pivot）；$R^{tr}_{n-1}$ = 截断系统（$n$ 个二次在 $n-1$ 变量，置 $x_n=0$）的可达列集。对 $c\in R_n$ 写 $c=x_n^ew$，$w$ 为去掉 $x_n$ 的部分。
+
+> **猜想（截断可达性相容）**：上半区每个可达列 $c=x_n^ew$，若 $\mathrm{codeg}_{tr}(w)\ge2$，则 $w\in R^{tr}_{n-1}$。
+
+### 29.2 形象例子（$n=3$，手算）
+3 个 generic 二次（$x_1\succ x_2\succ x_3$）：gin $=(x_1^2,x_1x_2,x_2^2,x_1x_3^2,x_2x_3^2,x_3^4)$，标准集 $\{1,x_1,x_2,x_3,x_1x_3,x_2x_3,x_3^2,x_3^3\}$（8 个）。截断（3 个二次在 $x_1,x_2$）：gin $=(x_1^2,x_1x_2,x_2^2)$，标准集 $\{1,x_1,x_2\}$。
+
+取可达种子 $c=x_1\cdot\LT(x_1x_3^2)=x_1^2x_3^2$，$e=2$，$w=x_1^2$。$x_1^2$ 是截断的生成元 ⟹ 截断可达列。✓ 类似 $x_1x_2x_3^2\mapsto x_1x_2$（截断生成元）、$x_1x_3^4\mapsto x_1$（截断标准）。高度公式在这里读作 $\alpha(1)=4,\alpha(x_1)=\alpha(x_2)=2$，正好给出 $x_3^4,x_1x_3^2,x_2x_3^2$。**每个去 $x_n$ 部分都是截断可达列。**
+
+### 29.3 推进：诊断 + 条件归纳
+**修了一个 bug**：`build_semireg_hilbert` 参数是 (ngens,nvars)，我之前截断算成了欠定系统。修正后能算截断（超定）可达集。
+
+**诊断（关键）**：直接测相容性，发现"不相容"的 $w$ **全是 $\mathrm{codeg}_{tr}\le1$**（最大 codeg=1，是生成元/近标准），把生成元也算进可达列后：
+- $n=8,12$：相容性 **100% 成立**；
+- $n=6,10$：仅剩极少 $\mathrm{codeg}_{tr}\le1$ 的"失败"（我的偏序闭包没显式枚举到的近标准列），且这些 $c$ 的 $\mathrm{codeg}(c)\le2$ 直接成立。
+
+**所以真正要紧的 $\mathrm{codeg}_{tr}(w)=2$ 的列，永远相容（$n\le12$ 验证）。** 这正是归纳需要的。
+
+**条件归纳（已进 tex，18 页）**：设相容性在每层成立，则上半区 L2′ 成立。证：对变量数 $k$ 归纳（$n$ 个二次固定）。
+- 基例：高度超定（socle ≤3）时，所有 ≤3 次非标准单项式 codeg ≤2 无条件成立（1 次因子必标准）。
+- Case A：某 $x_n$-生成元 $x_n^am$ 整除 $c$，则 $w=u'm$，$\deg u'\le2$（窗），$m$ 是 $w$ 的 2 度内标准因子 ⟹ codeg(c) ≤2。
+- Case B：无此生成元（⟺ $\mathrm{codeg}_{tr}(w)\ge2$），由相容性 $w$ 截断可达 ⟹ 归纳假设给 $\mathrm{codeg}_{tr}(w)\le2$ ⟹ codeg(c) ≤2。
+- 截断次数 $\deg w\approx D-d$ 向基例递减，归纳良基。
+
+### 29.4 诚实状态
+- 相容性**验证到 $n=12$**（codeg=2 的列全相容），但**没证**。
+- 它现在是**唯一**缺口：证了它，上半区 L2′（及仿射峰的 poly·$2^n$）由条件归纳即得。
+- 仍循环的点：归纳把 L2′$_n$ 归到 L2′$_{截断}$，两者同型；靠 socle ≤3 的基例 + 相容性终止。残余是"F4 闭包在 co-degree-2 层上与 KNS 截断交换"——这是该证的下一步。
+- 注：相容性的"失败"全是 codeg ≤1（无害闭包枚举缺漏），不是真失败；这是本轮最重要的诚实发现。
+
+---
+
+## 第 30 部分　推进相容性证明：剥离 $x_n$ 作为闭包态射 + 精确剩余缺口
+
+继续攻相容性。修了 `build_semireg_hilbert` 参数 bug（是 (ngens,nvars)）后，能正确算截断（超定）可达集，做了三组关键实验。
+
+### 30.1 完整相容性（比需要的更强）成立
+测 $\pi(R_n)\subseteq R^{tr}$（$\pi$ = 剥掉 $x_n$ 的乘性映射）：**所有**可达列的去 $x_n$ 部分都是截断可达列。
+- $n=8,12$：**100%**；$n=10$：5704 中 5679 在内，25 个不在（**全是 $\mathrm{codeg}_{tr}\le1$**，闭包枚举缺漏，无害）。
+
+不只 codeg=2，是几乎全部。相容性站得很稳。
+
+### 30.2 关键结构事实：$R^{tr}\supseteq\{\mathrm{codeg}_{tr}\le1\}$
+测截断可达集 $R^{tr}$ 的 codeg 结构：
+- $R^{tr}\supseteq\{$所有 $\mathrm{codeg}_{tr}\le1$ 单项式$\}$ = $\{x_i\cdot$标准$\}$：$n=8,12$ **全包含**（$n=10$ 差 5，闭包缺漏）。
+- $R^{tr}\subsetneq\{\mathrm{codeg}_{tr}\le2\}$：只含约一半（190/241, 826/1338, 3640/6954）。
+
+所以 codeg≤1 全可达（干净事实），codeg=2 是**严格子集**（可达性真的有选择性）。
+
+### 30.3 证明骨架（已进 tex，19 页）：剥离 = 闭包态射
+$R_n$ 由 Type-1 种子 $x_j\LT(G)$ 经约化闭包生成。要证 $\pi$ 把种子和闭包儿子都送进 $R^{tr}$。
+
+**引理（低 codeg 可达）**：$R^{tr}\supseteq\{\mathrm{codeg}_{tr}\le1\}$（验证到 $n=12$）。
+
+**种子投影（干净）**：
+- $G$ 不含 $x_n$ ⟹ $\LT(G)$ 是截断生成元（KNS：截断 GB = 不含 $x_n$ 的元素之 $x_n=0$ 限制），$\pi(x_j\LT(G))=x_j\LT(G)$ 是截断种子 ✓。
+- $G$ 含 $x_n$ ⟹ $\LT(G)=x_n^am_0$（$m_0$ 截断标准），$\pi=x_jm_0$ 是 codeg≤1，由引理 ∈ $R^{tr}$ ✓。
+
+**所以全部种子投影后可达。**
+
+**闭包儿子**：儿子 $u\cdot s$（$s$ 标准），$\pi=\pi(u)\pi(s)$。codeg≤1 的儿子由引理可达。**剩下的精确缺口 = peel 后 codeg 恰为 2 的儿子**：要证它落进截断的**可达 codeg-2 层**（而非全部 codeg-2，后者更大）。这要追踪"产生该儿子的 $n$ 变量约化能不经过 $x_n$-重生成元实现，从而投影成真截断约化"。这就是低一维的同型 L2′，故 Prop 的归纳只能降到 socle≤3 基例。
+
+### 30.4 诚实状态
+**这轮的实质进展**：把相容性从"黑箱猜想"变成**带证明骨架的命题**——
+- 种子层**完全证明**（模 codeg≤1 引理）；
+- codeg≤1 引理验证到 $n=12$（且形式干净 $\{x_i\cdot$标准$\}$，像可证）；
+- 唯一缺口收缩到 **codeg-2 儿子的投影**，即"$n$ 变量约化可避开 $x_n$-重生成元"。
+
+仍未证，但缺口比"整个相容性"小得多、具体得多。下一步：证 codeg≤1 引理（应可从 F4 度-$d$ 矩阵列 ⊇ 标准的上阴影推出），再处理 codeg-2 儿子的无-$x_n$-重-生成元实现。
+
+---
+
+## 第 31 部分　推进证明的两件事：一个诚实的纠错 + 把缺口钉死在 codeg-2 reductor
+
+继续上一轮的两件事（证 codeg≤1 引理；处理 codeg-2 儿子）。结果：**第一件事发现上轮的引理是错的**，第二件事把缺口钉得更死。
+
+### 31.1 纠错：codeg≤1 引理（上轮）对稀疏可达集是**假**的
+上轮提的"所有 codeg≤1 单项式可达"，对真实（稀疏）F4 可达集**不成立**：
+- 例：$x_4^2x_9=x_9\cdot x_4^2$，多余变量 $x_9$ 在生成元 $x_4^2$ **之下**，不是 Type-1 lcm，可能永不被达到。
+- 实测：$n=10$ 的 5 个 first-gen 闭包"漏掉"的 codeg-1 单项式，全是这种形式（$x_4^2x_9$ 等），且它们**正是**剥离后的 $x_n$-重种子里那 5 个"未达"的。
+
+**但这些全是 $\mathrm{codeg}_{tr}=1$**，对应的列 $c$ 由高度论证（Case A）直接给 $\mathrm{codeg}(c)\le2$，**根本不需要相容性**。所以猜想只对 $\mathrm{codeg}_{tr}(w)=2$ 陈述是对的，那里 $n\le12$ **零例外**。
+
+**关键认识**：种子剥离后 codeg≤1（$x_n$-free 种子→截断种子；$x_n$-重种子→$x_jm_0$，codeg≤1）。所以**相容性要紧的 codeg-2 列从来不是种子，全是中间 reductor**。上轮的 codeg≤1 引理既错、又不是该证的东西。
+
+### 31.2 缺口钉死：codeg-2 reductor 的投影
+真正的内容：codeg-2 reductor 列 $c$（$w=\pi(c)$，$\mathrm{codeg}_{tr}(w)=2$），写成可达列 $m_0$ 的闭包儿子 $c=u\,s$，要证 $\pi(c)=\pi(u)\pi(s)$ 是 $\pi(m_0)$ 的真截断约化儿子。
+
+**精确障碍**：若 $n$ 变量约化用的生成元 $g_0$ 是 $x_n$-重的，则 $\pi(\LT(g_0))$ 是截断**标准**单项式（不是截断生成元），这步不投影。**要证的是：每个 codeg-2 reductor 能经过只用 $x_n$-free 生成元的约化链达到**，从而整条链在 $\pi$ 下投影成截断约化。
+
+### 31.3 codeg-2 可达层抗拒干净刻画
+想找区分"可达 codeg-2"（约占 25%）的细不变量，试了几个，**都失败**：
+- EK 条件（两个多余变量 ≤ 标准部分最小变量）：**恒真**（所有 codeg-2 都满足），不区分。
+- 递归 parent（$M$ 可达 ⟺ 某/所有 $M/x_i$ 可达）：50%/60%/77%，不刻画；"存在可达 parent"也恒真。
+
+所以可达 codeg-2 层没有明显的局部刻画。这是难点的根源。
+
+### 31.4 诚实状态
+- **本轮主要是纠错 + 钉缺口**，不是突破。上轮证明骨架的 codeg≤1 引理是错的，已在 tex 改正（删掉假引理，sec:peel 重写诚实版）。
+- 相容性（codeg-2）仍验证到 $n=12$ 零例外，但**未证**。
+- 缺口现在精确为：**codeg-2 reductor 可经无-$x_n$-重-生成元链达到**（⟺ 可达层在 $\pi$ 下相容）。这是稀疏 F4 可达集在截断下的刻画问题，文献里 KNS 只到 GB 层、没到列层，是真开问题。
+- 这层抗拒局部刻画（EK、parent 都恒真/不准），暗示需要更全局的论证（也许追踪 Type-1 链的 $x_n$-degree 演化，或经 Gorenstein 对偶）。
+
+---
+
+## 第 32 部分　采纳"只考虑稠密 generic"的建议——绕开稀疏可达集刻画，得到最干净的命题
+
+你的提醒是对的：纠结**精确稀疏可达集**（依赖约化顺序）没必要。这轮按你的两条建议（稠密 generic + 绕开稀疏刻画）做，得到了整个问题**最干净的等价命题**。
+
+### 32.1 关键实验：全生成元闭包 $\mathcal R$ 是可达集的**上逼近**，却仍 codeg ≤2
+$\mathcal R$ = 从种子出发、每个单项式用**所有**整除它的生成元做约化（而非真实 F4 的"每个单项式一个约化元"）的闭包。所以：
+$$\text{真实可达集}\subseteq\mathcal R\quad(\text{与约化顺序无关}).$$
+实测 $\mathcal R$ 的**最大 codeg = 2**，$n=8,10,12,14$ 全部成立。即使 $\mathcal R$ 严格大于可达集、又严格小于全体 codeg≤2 单项式（约占 40%）。
+
+### 32.2 整个支撑界归约成一句话
+- **计数引理（严格）**：codeg≤2 的非标准单项式数 $\le 2^n\binom{n+2}{2}=O(n^2)2^n$。证：$M\mapsto(M_0,M/M_0)$（$M_0$ = deg≥deg-2 的标准因子）单射，像落在 标准×{deg≤2}。实测 $|\{$codeg≤2$\}|/2^n\approx n$，比 $n^2$ 还松。
+- **归约**：$\#\text{列}=2^n+\#\text{可达非标准}\le 2^n+\#\mathcal R\le 2^n+\#\{$codeg≤2$\}\le(1+\binom{n+2}{2})2^n=O(n^2)2^n$。
+
+所以**整个 $\Theta(\sqrt n\,2^n)$ 支撑界 = 一个纯组合猜想**：
+$$\boxed{\text{猜想：}\mathcal R\text{ 中每个单项式 codeg}\le2.}$$
+（已进 tex，20 页，def:rall + lem:count2 + conj:rall。）
+
+### 32.3 为什么这是对的目标（绕开了所有麻烦）
+$\mathcal R$ 的定义**不依赖**：F4 约化顺序、超出 gin strongly stable 形状的 genericity、截断。它蕴含旧的相容性猜想和 L2′，但比两者都干净。把"哪些稀疏列可达"换成"约化-swap 不会逃出 codeg 2"。
+
+### 32.4 证明骨架 + 精确障碍
+归纳证 codeg($\mathcal R$)≤2：
+- 种子 $x_j\LT(g)$：codeg≤2（删 $x_j$ 和实现 $\mathrm{codeg}(\LT(g))=1$ 的那个变量）。✓
+- swap $m\mapsto(m/\LT(g))s$ 保持 codeg≤2：**精确障碍**——把首项因子 $\LT(g)$ 换成 DRL 更小的同次标准单项式 $s$，**不是逐分量减小**，所以 $m$ 的 deg-2-标准因子不一定整除 child。
+
+要的是：generic CI 里，$m$ 的存活标准部分乘 $s$ 仍在"两次删除内到标准"——这是 gin 标准集与乘法如何交互的命题，strongly stable 形状应能控制，但我还没归到已知性质。
+
+### 32.5 诚实状态（这轮是实质进展）
+- **最干净的等价命题到手**：$\Theta(\sqrt n\,2^n)$ ⟸ codeg($\mathcal R$)≤2（其余全严格：计数、可达⊆$\mathcal R$）。
+- conj:rall 验证到 $n=14$，纯组合，无截断/无约化顺序依赖。**这正是你建议的"绕开稀疏刻画"**。
+- 仍未证，但目标从"刻画稀疏可达集"变成"swap 不逃出 codeg 2"，具体且组合。障碍精确：DRL-swap 非逐分量单调。下一步：用 strongly stable 性质控制 标准×标准 乘积的 codeg。
+
+---
+
+## 第 33 部分　突破：codeg 在"生成元约化"下单调不增——把支撑界归到一条纯组合引理
+
+沿着上轮的方向（证 codeg($\mathcal R$)≤2），找到了一个**强得多、干净得多**的命题，它一举蕴含全部。
+
+### 33.1 核心发现：约化-swap 使 codeg 单调不增
+swap 是 $m=uL\mapsto us=c$（$L=\LT(g)$ 生成元，$s$ 标准 $\prec L$，$\deg s=\deg L$）。**实测 codeg($c$) ≤ codeg($m$)，零例外**：
+- $\mathcal R$ 内全部 swap：$n=8$ (6万), $n=10$ (86万), $n=12$ (**1230万** swap) 全部成立。
+- **对任意 $u$**（不限 $\mathcal R$）：随机 30–40 万样本 ×（$n=8,10,12$）零违例。
+
+所以这是 gin 的**一般引理**（conj:monotone）：
+$$\text{codeg}(us)\le\text{codeg}(uL),\quad L\text{ 生成元},\ s\text{ 标准}\prec L,\ \deg s=\deg L.$$
+
+### 33.2 假设是紧的：生成元身份必需
+把 $L$ 换成**任意** $t\succ s$（$t$ 不必生成元）：**失败**（177/322/583 违例）。所以"换成更小的标准因子降 codeg"**仅当被换的是生成元首项**时成立。genericity 正好通过 $L$ 是极小生成元这点进入。
+
+### 33.3 一举蕴含支撑界（已进 tex，21 页）
+**命题**：conj:monotone ⟹ conj:rall ⟹ $O(n^2)2^n$。证：生成元 codeg=1，种子 codeg≤2；其余 $\mathcal R$ 元素由 swap 得到，单调性给 codeg 不增；归纳全 ≤2；计数引理 + 可达⊆$\mathcal R$ 收尾。∎
+
+所以整条链现在是：
+$$\Theta(\sqrt n\,2^n)\ \Longleftarrow\ \text{conj:monotone（codeg 在生成元约化下不增）}$$
+**一条纯组合、关于 gin 标准单项式序理想的引理**，无 F4、无可达性、无截断。
+
+### 33.4 证明骨架 + 精确剩余
+取 $uL$ 的最大标准因子 $D$。$us$ 的标准因子候选 = $\gcd(D,us)$（标准，因整除 $D$、标准集是序理想）。它比 $\deg D$ 差 $\sum_i\max(0,(L\restriction_D)_i-s_i)$（$L\restriction_D$ = $D$ 落在 $L$ 里的部分）。
+- 若 $L\restriction_D\mid s$：差 0，单调性立得。
+- 一般：需用 $us$ 的剩余预算（因 $s\prec L$，预算在**大下标变量**）扩充 $\gcd(D,us)$ 回到 $\deg D$，且保持标准。
+
+**精确剩余 = strongly stable 标准集的 exchange/saturation 性质**：从生成元 $L$ 降到更小标准 $s$ 释放的预算总能被楼梯重新吸收。这现在是纯粹关于标准单项式序理想的命题（无 F4/可达/截断）。
+
+### 33.5 诚实状态（实质突破）
+- **最干净的等价命题**：支撑界 ⟸ 一条 gin 标准集的组合引理（codeg 在生成元约化下单调不增）。
+- 验证极充分（千万级 swap + 任意 $u$ 随机），假设紧（生成元必需）。
+- 仍未证，但缺口从"刻画稀疏可达集/截断相容"彻底变成**一条关于序理想的 exchange 性质**——这是 almost-revlex/strongly stable 理想的标准研究对象，下一步该去对接已知的 Borel 理想组合性质。
+
+---
+
+## 第 34 部分　对接 Moreno-Socías / almost-revlex：证出 codeg 公式，把缺口钉成一条序理想命题
+
+按"对接已知结果"的方向，把 conj:monotone 接到 almost-revlex（Moreno-Socías）结构上，证出了一个干净引理，缺口精确化。
+
+### 34.1 确认 almost-revlex（Moreno-Socías）
+实测（$n=6,8,10,12$，73 万对）：**每个 $d$ 次标准单项式 DRL-小于每个 $d$ 次生成元**。所以 gin 是 almost reverse lexicographic（Moreno-Socías 成立）。⟹ conj:monotone 里的"$s\prec L$"对标准 $s$ **自动**。
+
+### 34.2 证出 codeg 公式（rigorous，已进 tex）
+**引理（codeg 由大下标部分给出）**：strongly stable $J$，$P_\ell(M)$ = $M$ 的 degree-$\ell$ 大下标部分（贪心删最大变量）。则 $M$ 的最大标准因子 = $P_{\nu(M)}(M)$，$\nu(M)=\max\{\ell:P_\ell(M)\in S\}$，故 **codeg($M$)=$\deg M-\nu(M)$**。
+**证**（干净）：任意 degree-$\ell$ 因子 $T$，$P_\ell(M)$ 在每个后缀 $\sum_{i\ge t}$ 上 ≥ $T$（贪心从大下标填），即 $P_\ell(M)$ 由 $T$ 经升下标移动得到；strongly stable ⟹ $S$ 对升下标封闭 ⟹ $T\in S\Rightarrow P_\ell(M)\in S$。∎
+
+实测 270 万单项式零反例。**这是这部分第一块完全严格的结构引理。**
+
+### 34.3 缺口精确化 + 一条死路排除
+由 codeg 公式，conj:monotone ⟺ **$P_{\nu(uL)}(us)\in S$**（即 $\nu(us)\ge\nu(uL)$）。
+
+**排除一条自然死路**：想用 $P_{\nu(uL)}(us)\preceq_{Borel}P_{\nu(uL)}(uL)$（dominance）+ strongly stable 推出 —— **不行**。实测 dominance **约 1/3 情况失败**，而 $P_{\nu(uL)}(us)$ **每次都标准**。所以这个 membership 是真的、但**不是** dominance 的推论；它必须用"$L$ 是极小生成元 + almost-revlex"（$L$ 换任意 $\succ s$ 单项式则命题假——已验）。
+
+也试了显式 transfer 构造（$D_u\cdot s$ 的大下标部分）：99.999% 成立，$n=12$ 仅 2/17 万失败。所以构造接近但不精确。
+
+### 34.4 诚实状态（这部分实质进展）
+- **证出 codeg 公式**（第一块严格结构引理，连到 strongly stable）。
+- **确认 almost-revlex**（连到 Moreno-Socías）。
+- 缺口精确成**一条 almost-revlex 序理想命题**：$P_{\nu(uL)}(us)\in S$（从生成元 $L$ 降到更小标准 $s$ 不降大下标标准 reach）。
+- 排除了 dominance 死路（~1/3 失败但结论真），证明必须实质用生成元身份 + almost-revlex。
+- 整条链：$\Theta(\sqrt n\,2^n)$ ⟸ conj:monotone ⟸ 这条序理想 membership。无 F4/可达/截断，是 Borel/almost-revlex 理想的纯组合问题。
+
+**下一步**：这条 membership 现在是 almost-revlex 序理想的标准对象，应能用 EK 分解或 Moreno-Socías 的显式楼梯结构（Pardue/Cho-Park 等的结果）攻。
+
+---
+
+## §35. 最后一步:精确陈述、算例、与这一轮的新进展
+
+### 35.1 把"剩的一步"讲清楚 —— 三个等价形式
+
+设 $J$ = $n$ 个一般二次型完全交的 gin(strongly stable + almost-revlex,Hilbert $(1+t)^n$,$|S|=2^n$)。
+一次 **swap**:$u$ 任意单项式,$L$ 极小生成元,$s$ 标准单项式且 $\deg s=\deg L$(由 almost-revlex 自动有 $s\prec_{\rm DRL}L$)。
+目标(conj:monotone):$\nu(us)\ge\nu(uL)$,即 $\operatorname{codeg}(us)\le\operatorname{codeg}(uL)$。
+
+**本会话已严格证明的引理**:codeg 公式;DRL 不等式 $P_\ell(us)\preceq_{\rm DRL}P_\ell(uL)$(所有 $\ell$);Case A($m_s:=P_{\nu(uL)}(us)$ 必非生成元);dominance 充分(下 35.3);γ-刻画(下 35.4)。
+
+记 $\ell_0=\nu(uL)$,$m_s=P_{\ell_0}(us)$,$m_L=P_{\ell_0}(uL)\in S$,$\delta=\deg(us)=\deg(uL)$。剩下要证的命题 $(\star)$ 有三个等价形式:
+
+- **形式 1(归纳里真正用到的)**:$\operatorname{codeg}(uL)\le2\Rightarrow\operatorname{codeg}(us)\le2$。
+  (只需保 $\le2$,因为闭包归纳假设给 $\operatorname{codeg}(uL)\le2$。)等价于 $P_{\delta-2}(us)\in S$:把 $us$ 的 2 个最大变量(最小下标单元)剥掉仍标准。**关键**:于是 $m_s$ 至多比 $us$ 少 2 个单元。
+- **形式 2**:没有次数 $<\ell_0$ 的极小生成元整除 $m_s$。
+- **形式 3(γ-形式)**:对每个有生成元的 $d<\ell_0$,$P^{\rm sm}_d(m_s)\prec_{\rm DRL}\gamma_d$。这里 $P^{\rm sm}_d(m)$ = $m$ 的小下标部分(保留 $d$ 个最小下标单元 = DRL-最大的 $d$ 次因子),$\gamma_d$ = 最小的 $d$ 次生成元。
+
+### 35.2 两个真实算例(由 gap.c 生成,$n=8$)
+
+**算例 A(dominance 成立 —— Borel 论证可直接关掉)**
+$u=x_3x_6x_7^2$,$L=x_1^2$(生成元,次数 2),$s=x_2x_6$(标准,次数 2,$s\prec L$)。
+- $uL=x_1^2x_3x_6x_7^2$,codeg 2;剥 2 个最大变量 $\to x_3x_6x_7^2$(标准)。
+- $us=x_2x_3x_6^2x_7^2$,codeg 2;剥 2 个最大变量 $\to x_6^2x_7^2$(标准)。
+- $m_s=x_6^2x_7^2$,$m_L=x_3x_6x_7^2$,$m_L$ dominate $m_s$ → 命题 domsuff 直接给出 $m_s\in S$。
+
+**算例 B(dominance 失败 —— 真正的缺口)**
+$u=x_2x_8^2$,$L=x_3x_5x_7^2$(生成元,次数 4),$s=x_5^2x_6x_8$(标准,次数 4,$s\prec L$)。
+- $uL=x_2x_3x_5x_7^2x_8^2$,codeg 2(剥掉 $x_2,x_3$)。
+- $us=x_2x_5^2x_6x_8^3$,codeg 2(剥掉 $x_2,x_5$)。
+- $m_s=x_5x_6x_8^3$ [标准],$m_L=x_5x_7^2x_8^2$ [标准]。
+- **为何 dominance 失败**:差异在 $s$ 侧贡献 $x_6x_8$ vs $L$ 侧 $x_7^2$,二者在 dominance(前缀和)序下**不可比**(前缀和在下标 6/7 处交叉)。DRL 不等式 $m_s\prec_{\rm DRL}m_L$ 仍成立。
+- **为何 $m_s$ 仍标准(γ-形式直接验证)**:$P^{\rm sm}_2(m_s)=x_5x_6\prec\gamma_2=x_2x_4$;$P^{\rm sm}_3(m_s)=x_5x_6x_8\prec\gamma_3=x_3x_5x_6$;$P^{\rm sm}_4(m_s)=x_5x_6x_8^2\prec\gamma_4=x_4x_5x_7^2$。都因为 $m_s$ 的小下标部分带着高下标的 $x_8$,把它在 DRL 里压到 $\gamma_d$ 之下。注意这**不是**经 $m_L$ 得到的(小下标截断会反转 DRL:$P^{\rm sm}_2(m_s)=x_5x_6\succ x_5x_7=P^{\rm sm}_2(m_L)$)。
+
+### 35.3 命题(dominance 充分,prop:domsuff,已证)
+
+若 $m_L$ 在 majorization 序下 dominate $m_s$(即对所有 $t$,$\sum_{i\le t}(m_L)_i\ge\sum_{i\le t}(m_s)_i$,小下标质量更多),则 $\nu(us)\ge\ell_0$。
+**证**:设 $m_s\notin S$,则 $m_s\in J$。$m_L$ majorize $m_s$ 且同次 ⟹ $m_L$ 由 $m_s$ 经有限步 $x_i\mapsto x_j\,(j<i)$ 得到(majorization/Muirhead 引理)。strongly stable 理想恰对这些步封闭,故 $m_s\in J\Rightarrow m_L\in J$,与 $m_L\in S$ 矛盾。∎
+**范围是 sharp 的**:dominance 在约 30–40% 的 swap 失败;即便限制到 $\operatorname{codeg}(uL)\le2$ 区间仍有 15–45% 失败,但 $\nu(us)\ge\nu(uL)$ 永远成立。**缺口 = 非-dominance 情形**。数据(gap.c,$n=8,10,12$,百万级):在 $\operatorname{codeg}(uL)\le2$ 区间,$\operatorname{codeg}(us)\ge3$ **从不发生**;但"$\operatorname{codeg}(us)=2$ 吃紧 且 dominance 失败"**非空**(每样本约 1.2 万)。
+
+### 35.4 引理(γ-刻画,lem:gammathresh,已证)
+
+对 almost-revlex 理想:$m\in S\iff$ 对每个存在生成元的次数 $d$,$P^{\rm sm}_d(m)\prec_{\rm DRL}\gamma_d$。
+**证**:若 $m\notin S$,则某极小生成元 $g_0\mid m$,$\deg g_0=d_0$;于是 $\gamma_{d_0}\preceq g_0\preceq P^{\rm sm}_{d_0}(m)$,在 $d_0$ 处违反。反之若某 $d_0$ 有 $P^{\rm sm}_{d_0}(m)\succeq\gamma_{d_0}$,almost-revlex 给 $P^{\rm sm}_{d_0}(m)\in J$,它整除 $m$,故 $m\in J$。∎
+这解释了为何"小下标截断传递"行不通:要比的是对**固定阈值** $\gamma_d$,而非对 $m_L$;而小下标截断反转 DRL。
+
+### 35.5 这一轮新进展:显式阶梯 + 干净的顶端 γ 公式
+
+打出 $n=4..8$ 的完整阶梯(stair.c)。**高次生成元的最小元有干净闭式**:
+$$\boxed{\;\gamma_d=x_{n-1}^{\,n+1-d}\,x_n^{\,2d-n-1}\quad\text{对 }\tfrac{n+1}{2}\le d\le n+1\;}$$
+验证($n=8$):$\gamma_9=x_8^9,\ \gamma_8=x_7x_8^7,\ \gamma_7=x_7^2x_8^5,\ \gamma_6=x_7^3x_8^3,\ \gamma_5=x_7^4x_8$。边界 $d=(n+1)/2$($n$ 奇)给 $\gamma_d=x_{n-1}^{(n+1)/2}$:$n=5$ 的 $\gamma_3=x_4^3$、$n=7$ 的 $\gamma_4=x_6^4$ ✓。
+低次($d<(n+1)/2$)的 $\gamma_d$ 散落在小下标上(如 $n=8$:$\gamma_2=x_2x_4,\gamma_3=x_3x_5x_6,\gamma_4=x_4x_5x_7^2$),无同样干净的闭式。
+
+**这把 $(\star)$ 的高次部分($d\ge(n+1)/2$)化为具体不等式** $P^{\rm sm}_d(m_s)\prec_{\rm DRL}x_{n-1}^{n+1-d}x_n^{2d-n-1}$。注意此式对**任意**单项式并不成立(例如 $m_s=x_{n-1}^c x_n^e$ 且 $c\ge d>(n+1)/2$ 时 $P^{\rm sm}_d=x_{n-1}^d\succ\gamma_d$),所以必须用 swap 结构($s$ 标准 + $\operatorname{codeg}(uL)\le2$)来排除 $x_{n-1}/x_n$ 失衡。这是关于"标准性 = $x_{n-1}$ 相对 $x_n$ 不能过多"的平衡条件,swap 必须保持它。
+
+### 35.6 诚实状态
+
+整条链 $\Theta(\sqrt n\,2^n)\Leftarrow$ monotonicity $\Leftarrow(\star)$ 仍差 $(\star)$。$(\star)$ 现有三等价形式 + 两个新工具(domsuff 把 dominance 情形关掉;γ-刻画把它变成对固定阈值 $\gamma_d$ 的小下标比较)+ 显式阶梯(高次 γ 闭式)。**真正剩下的**:非-dominance 吃紧情形,等价于证 $P^{\rm sm}_d(m_s)\prec\gamma_d$。已验证至 $n=12$。需要的输入:用 $\operatorname{codeg}(uL)\le2$ 与 $s$ 标准,控制 $m_s$ 小下标部分的 $x_{n-1}/x_n$ 平衡,使之落在 $\gamma_d$ 之下。纯 almost-revlex 序理想命题,无 $F_4$/可达/截断。
+
+---
+
+## §36. 重大进展:严格消去所有高次生成元,缺口收窄到低次
+
+延续 §35.5 的干净顶端公式 $\gamma_d=x_{n-1}^{n+1-d}x_n^{2d-n-1}$($d\ge\lceil(n+1)/2\rceil$,验证至 $n=10$),得到三条引理,**严格**(非数值)地把次数 $\ge(n+1)/2$ 的生成元从 $(\star)$ 中全部排除。
+
+**引理 A($x_n$-富集,lem:xnrich,已证)**:每个次数 $d\ge(n+1)/2$ 的标准单项式 $m$ 满足 $e_n(m)\ge 2d-n-1$。
+证:almost-revlex 给 $m\prec_{\rm DRL}\gamma_d$;$e_n(\gamma_d)=2d-n-1$;若 $e_n(m)<2d-n-1$,则在最大下标 $n$ 处 $m$ 的指数更小 ⟹ $m\succ_{\rm DRL}\gamma_d$,矛盾。∎
+
+**引理 B(swap 不丢 $x_n$ 质量,lem:enswap,已证)**:$e_n(s)\ge e_n(L)$,从而 $e_n(us)\ge e_n(uL)$,$e_n(m_s)\ge e_n(m_L)$。
+证:$s\prec_{\rm DRL}L$ ⟹ 在最大的相异下标处 $s$ 指数更大;若相异发生在下标 $n$ 则 $e_n(s)>e_n(L)$,否则 $e_n(s)=e_n(L)$。$P_{\ell_0}$ 保留 $\min(e_n(\cdot),\ell_0)$ 个 $x_n$,$\min$ 单调。∎
+**关键直觉**:DRL 最先比最大变量的指数,所以 $s\prec L$ 自动给出 $e_n(s)\ge e_n(L)$——这正是 $x_n$ 方向的传递。
+
+**命题 C(高次生成元全部排除,prop:highdone,已证)**:没有次数 $d\in[(n+1)/2,\ell_0)$ 的极小生成元整除 $m_s$。于是 $(\star)$ 归约为:**没有次数 $d<(n+1)/2$ 的极小生成元整除 $m_s$**。
+证:引理 B + 引理 A(用于 $m_L\in S$,次数 $\ell_0\ge(n+1)/2$)给 $e_n(m_s)\ge 2\ell_0-n-1$。对 $(n+1)/2\le d<\ell_0$,$P^{\rm sm}_d(m_s)$ 的 $x_n$-指数 $=\max(0,d-\ell_0+e_n(m_s))\ge d+\ell_0-n-1\ge 2d-n>e_n(\gamma_d)$(用 $\ell_0\ge d+1$),故 $P^{\rm sm}_d(m_s)$ 比 $\gamma_d$ 的 $x_n$ 更多 ⟹ $\prec_{\rm DRL}\gamma_d$ ⟹(γ-刻画)无 $d$ 次生成元整除 $m_s$。∎
+
+**数值确认**(highd.c,codeg(uL)≤2 区间,$n=6,8,10$,百万级):$e_n(s)\ge e_n(L)$ 零反例;$e_n(m_s)\ge 2\nu(uL)-n-1$ 零反例。
+
+### 36.1 剩下的低次缺口 —— 为何更难
+
+$(\star)$ 现在只剩:次数 $d<(n+1)/2$ 的(小下标)生成元不整除 $m_s$。困难在于**不对称**:
+- 高次用 $x_n$,与 DRL 的优先级一致($x_n$ 最先比),所以 $s\prec L\Rightarrow e_n(s)\ge e_n(L)$ 免费。
+- 低次要用 $x_1$(最小下标/最大变量),但 DRL **最后**才比 $x_1$,所以 $s\prec L$ **不**控制 $e_1(s)$ vs $e_1(L)$。无对应传递。
+- 低次的 $\gamma_d$ 散落在小下标,无干净闭式(如 $n=8$:$\gamma_2=x_2x_4,\gamma_3=x_3x_5x_6,\gamma_4=x_4x_5x_7^2$;注意到 $\gamma_d$ 的最小下标 $=d$)。
+
+**正确的替代输入是 codeg(uL)≤2 本身**:它界定了 $m_s$ 的小下标含量。关键机制:若 $u$ 有大量 $x_1$(比如 $e_1(u)\ge3$),则 $uL$ 同时含 $x_1$-超量与生成元 $L$,迫使 codeg(uL)>2,正好排除了"小下标生成元能整除 $m_s$"的配置。把这个机制定量化即可关掉低次缺口。
+
+### 36.2 当前完整状态
+
+$\Theta(\sqrt n\,2^n)\Leftarrow$ monotonicity $\Leftarrow(\star)$。$(\star)$ 拆为:
+- **高次部分($d\ge(n+1)/2$)**:✅ 严格证明(命题 C),模一条已强验证的阶梯公式(Fact gammaclean)。
+- **低次部分($d<(n+1)/2$)**:仍开放,但已隔离;需用 codeg(uL)≤2 控制 $m_s$ 的小下标含量。
+
+已证引理总表:codeg 公式、DRL 不等式、Case A、dominance 充分、γ-刻画、$x_n$-富集、swap 不丢 $x_n$、高次消去。
+
+## §37. 关闭低次缺口:两条截断不等式,把整个单调性归到干净的组合命题
+
+§36 把 $(\star)$ 收窄到"次数 $d<(n+1)/2$ 的低次(小下标)生成元不整除 $m_s$"。本节用**两条一致的截断不等式**关闭它,绕开低次 $\gamma_d$ 没有干净闭式的困难。
+
+记号:swap 为 $(u,L,s)$,$L$ 生成元、$s$ 标准、$\deg s=\deg L=:e$、$s\prec_{\rm DRL}L$;$\ell_0=\nu(uL)$,$c=\operatorname{codeg}(uL)\le2$,$m_s=P_{\ell_0}(us)$,$m_L=P_{\ell_0}(uL)$。$P^{\rm sm}_d(\cdot)$ = 小下标部分(最小的 $d$ 个单位)。
+
+### 37.1 带状(band)重述 —— 严格且关键
+
+把 $us=u\cdot s$ 的单位按下标升序排列。因为 $m_s=P_{\ell_0}(us)$ 删去 $c$ 个最小下标单位,所以
+$$P^{\rm sm}_d(m_s)=us\text{ 在下标秩 }c{+}1,\dots,c{+}d\text{ 上的那一段(band)}.$$
+同理 $P^{\rm sm}_d(m_L)$ 是 $uL=u\cdot L$ 在同样秩 $c{+}1,\dots,c{+}d$ 上的 band。两个 band 都是**同一个** $U$(=$u$ 的下标多重集)分别与 $S$、$L$ 归并(merge)后读出的;其中 $S\prec_{\rm DRL}L$,$|S|=|L|=e$。
+
+### 37.2 两条引理(验证成立,未证)
+
+> **引理 C2(低带,$d\le e$)** 对 $1\le d\le e$:
+> $$P^{\rm sm}_d(m_s)\preceq_{\rm DRL}\max{}_{\rm DRL}\bigl(P^{\rm sm}_d(m_L),\,P^{\rm sm}_d(s)\bigr).$$
+
+> **引理 A(高带,$d>e$)** 对 $e<d\le\ell_0$:
+> $$P^{\rm sm}_d(m_s)\preceq_{\rm DRL}P^{\rm sm}_d(m_L).$$
+
+注意在 $d=\ell_0$ 时引理 A 退化为已证的 DRL 不等式 $m_s\preceq_{\rm DRL}m_L$(cor:drlPP)。
+
+### 37.3 由两条引理推出完整单调性
+
+> **命题(模引理 C2、A)** $\nu(us)\ge\nu(uL)$,即 $\operatorname{codeg}(us)\le\operatorname{codeg}(uL)$。
+
+证:固定有生成元的次数 $d<\ell_0$。
+- 若 $d\le e$:引理 C2 给 $P^{\rm sm}_d(m_s)\preceq\max(P^{\rm sm}_d(m_L),P^{\rm sm}_d(s))$。$m_L,s\in S$ 故两者都 $\prec_{\rm DRL}\gamma_d$(γ-刻画 lem:gammathresh),两个 $\prec\gamma_d$ 的 DRL-较大者仍 $\prec\gamma_d$。
+- 若 $d>e$:引理 A 给 $P^{\rm sm}_d(m_s)\preceq P^{\rm sm}_d(m_L)\prec_{\rm DRL}\gamma_d$。(当 $d\ge(n+1)/2$,这一步也可由命题 C(prop:highdone)**严格**得到,与引理 A 无关——所以真正依赖引理 A 的只有中段 $e<d<(n+1)/2$。)
+
+于是 $P^{\rm sm}_d(m_s)\prec_{\rm DRL}\gamma_d$ 对所有 $d<\ell_0$ 成立 ⟹(γ-刻画)无 $<\ell_0$ 次生成元整除 $m_s$。Case A(prop:notgen)排除 $\ell_0$ 次(否则 $m_s$ 自己就是该生成元);$>\ell_0$ 次因 $\deg m_s=\ell_0$ 不可能整除。故 $m_s\in S$,即 $\nu(us)\ge\ell_0=\nu(uL)$。∎
+
+### 37.4 机制与覆盖逻辑
+
+- **为何拆在 $d=e$**:$d>e$ 时 $S$ 对 band 的贡献用尽($|S|=e<d$),共享的 $U$-内容使 $m_L$-band 占优,单独用 $m_L$ 就够(引理 A)。$d\le e$ 时,单用 $m_L$ 会偶尔失败(候选 $P^{\rm sm}_d(m_s)\preceq P^{\rm sm}_d(m_L)$ 失败约 0.2–0.3%,**且全部落在 $d\le e$**),这时 max 里的 $S$-项恰好补回——这正是 C2 的作用。
+- **小下标含量的来源**:$m_s$ 能用的小下标内容 = $u$ 的(被 $\operatorname{codeg}(uL)\le2$ 限制:$u$ 若有大量小下标超量,叠加生成元 $L$ 会自己迫使 $\operatorname{codeg}(uL)>2$)∪ $s$ 的(被标准性限制)。删去 $c\le2$ 个最小下标单位,正好抹掉可能凑成低次生成元的那部分。
+
+### 37.5 数值验证(决定性)
+
+`final.c`,均匀采样 swap、限定 $\operatorname{codeg}(uL)\le2$ 区间,逐 $n$ 跑:
+
+| $n$ | swaps | C2($d\le e$) | 引理 A($d>e$) | 合并 $P^{\rm sm}(m_s)\prec\gamma$ | $m_s\in S$ 独立验证 |
+|---|---|---|---|---|---|
+| 8  | 4.0×10⁵ | 0 反例 | 0 反例 | 0 反例 | 0 失败 |
+| 10 | 3.2×10⁵ | 0 反例 | 0 反例 | 0 反例 | 0 失败 |
+| 12 | 2.1×10⁵ | 0 反例 | 0 反例 | 0 反例 | 0 失败 |
+| 14 | 1.2×10⁵ | 0 反例 | 0 反例 | 0 反例 | 0 失败 |
+
+(`alla.c` 另测:候选"单用 $m_L$"$P^{\rm sm}_d(m_s)\preceq P^{\rm sm}_d(m_L)$ 的失败完全集中在 $d\le e$,$d>e$ 零失败 —— 与拆分点 $d=e$ 完全吻合。`lowd3.c`/`lowd4.c`/`midr.c` 分别独立确认 C2 全 $d\le e$、引理 A 中段,均零反例。dcmp 经已知对自检。)
+
+### 37.6 当前完整状态(更新)
+
+$$\Theta(\sqrt n\,2^n)\ \Leftarrow\ \text{monotonicity}\ \Leftarrow\ (\star)\ \Leftarrow\ \boxed{\text{引理 C2}+\text{引理 A}}$$
+
+- **高次部分($d\ge(n+1)/2$)**:✅ 严格(命题 C),模 Fact gammaclean(强验证)。
+- **低次部分($d<(n+1)/2$)**:由引理 C2($d\le e$)+ 引理 A($e<d<(n+1)/2$)关闭 —— 两条都是**干净、一致、与混乱的低次 $\gamma_d$ 无关**的截断不等式,已 $n=8,\dots,14$ 百万级零反例 + $m_s\in S$ 独立确认,但**尚未给出证明**。
+
+**若证出这两条 band 不等式**(最可能的路线:把 $S$ 经"降下标移动"transport 到 $L$,沿与 $U$ 的归并、在秩窗口 $c{+}1,\dots,c{+}d$ 内追踪),则由 §37.3 的命题,**完整 monotonicity 成立,$\operatorname{poly}(n)\cdot2^n$ 上界完成**,只余 Fact gammaclean 这一已验证闭式。这是把整个低次障碍**从"判定 $S$ 成员"压缩成"两个 merge 的 band 比较"**——一个纯粹有限的组合命题。
+
+已证引理总表(累积):codeg 公式、DRL 截断不等式、Case A、dominance 充分、γ-刻画、$x_n$-富集、swap 不丢 $x_n$、高次消去;**新增**:低/高带截断不等式(C2/A)将单调性归到上述单一组合命题(验证成立)。
+
+## §38. band 不等式的部分严格证明 + Fact gammaclean 的二变量归约
+
+本节记录把 §37 两条 band 不等式向严格证明推进的结果,以及 Fact gammaclean 归约到一条干净二变量规则。
+
+### 38.1 关键发现:band 不等式不是纯组合的
+
+对**任意**多重集 $U$、**任意** $S\prec_{\rm DRL}L$($|S|=|L|$)、**所有**窗口 $c\ge0$ 做纯组合测试(`bandcomb.c`,$n=6,8,10$,百万级):
+
+| | 通过 | 失败 |
+|---|---|---|
+| Lemma A($d>e$) | ~95% | ~5%(集中在小 $c$) |
+| C2($d\le e$) | ~95% | ~5%(集中在小 $c$) |
+
+**结论(真结果)**:band 不等式**对一般窗口 $c$ 不成立**。所以任何证明**必须**用 $J$ 的结构——具体窗口 $c=\operatorname{codeg}(uL)$(即 $m_L\in S$)、$s$ 标准、$L$ 生成元。这排除了一整类"纯多重集组合"证法。
+
+### 38.2 除法保持 DRL(引理,严格)
+
+> **引理(除法保持 DRL)** 设 $A\preceq_{\rm DRL}B$ 同次,$Q\mid A$ 且 $Q\mid B$(同一 $Q$)。则 $A/Q\preceq_{\rm DRL}B/Q$。
+
+**证**:$A\preceq_{\rm DRL}B$ 等价于在指数相异的最大下标 $\tau$ 处 $A_\tau>B_\tau$。除以 $Q$ 在每个下标 $i$ 减去 $Q_i$,故 $A/Q$ 与 $B/Q$ 相异的下标集合与 $A,B$ 相同,最大相异下标仍是 $\tau$,且 $(A/Q)_\tau-(B/Q)_\tau=A_\tau-B_\tau>0$。两商同次,故 $A/Q\preceq_{\rm DRL}B/Q$。∎
+
+### 38.3 Lemma A 的部分严格证明(情形 1+2,≥97%)
+
+回忆 $m_s=P_{\ell_0}(us)$,$m_L=P_{\ell_0}(uL)$,$c=\operatorname{codeg}(uL)$,$\ell_0=\nu(uL)$;$P^{\rm sm}_d(m_s)$ = 在 $us$ 下标秩 $c{+}1,\dots,c{+}d$ 的 band。记 $Q=P_{\ell_0-d}(us)$,$Q'=P_{\ell_0-d}(uL)$(各自顶 $\ell_0-d$ 部分)。
+
+**情形分类**(`acase.c`,$n=8,10,12$,全部成立):
+
+| 情形 | 占比 | 状态 |
+|---|---|---|
+| **情形 1**:$Q=Q'$ | 97.2–99.7% | **✅ 严格** |
+| **情形 2**:$Q\ne Q'$ 且 $e_n(P^{\rm sm}_d(m_s))>e_n(P^{\rm sm}_d(m_L))$ | 0.04–0.25% | **✅ 严格** |
+| **残余**:$Q\ne Q'$ 且两小部分 $x_n$ 指数相等 | 0.26–2.52% | 验证成立,见 §38.5 |
+
+**情形 1 证明**:大下标部分嵌套给 $P_{\ell_0-d}(m_s)=P_{\ell_0-d}(us)=Q$,故 $m_s=P^{\rm sm}_d(m_s)\cdot Q$,同理 $m_L=P^{\rm sm}_d(m_L)\cdot Q$。已证 $m_s\preceq_{\rm DRL}m_L$(cor:drlPP)。对公因子 $Q$ 用 §38.2:
+$$P^{\rm sm}_d(m_s)=m_s/Q\preceq_{\rm DRL}m_L/Q=P^{\rm sm}_d(m_L).\qquad\blacksquare$$
+
+**情形 2 证明**:$P^{\rm sm}_d(m_s)$ 在 max-下标 $x_n$ 上严格更多 ⟹ 在最大相异下标处更多 ⟹ $\prec_{\rm DRL}$。∎
+
+**残余的结构**:$Q\ne Q'$ 恰当 $e_n(uL)<\ell_0-d$;此时 $m_L$ 的 $x_n$ 全在顶 $e_n(uL)$ 段,故 $P^{\rm sm}_d(m_L)$ **无 $x_n$**;残余即"$P^{\rm sm}_d(m_s)$ 也无 $x_n$",**两小部分都落在 $x_1,\dots,x_{n-1}$**——退化到少一变量。见 §38.5 的降维归纳。
+
+### 38.4 Fact gammaclean 归约到二变量规则
+
+**归约(严格)**:整个 gammaclean 等价于 $x_{n-1}^a x_n^b\in S\iff 2a+b\le n$(`twovar.c` 验证 $n=6{-}10$ 零失配)。用强稳定性:
+- "$\in J$"方向归到单点 $\gamma_d\in J$(然后 $x_n\to x_{n-1}$ 移动给全部 $a\ge n+1-d$);
+- "标准"方向归到前驱 $x_{n-1}^{n-d}x_n^{2d-n}\in S$。
+
+**两端严格证出**:$d=n+1$:$\gamma_{n+1}=x_n^{n+1}\in J$($S_{n+1}=\varnothing$),极小($/x_n=x_n^n\in S$);$d=n$:$\gamma_n=x_{n-1}x_n^{n-1}$($|S_n|=1$)。
+
+**剩余 crux**:$\gamma_d\in J$ 对 $(n+1)/2\le d<n$——generic CI 的 gin 结构(Fröberg / Moreno-Socías);$R/J$ 非 Gorenstein,超平面截面 HF $=[\binom{n}{d}-\binom{n}{d-1}]_+$。已验证 $n\le10$。
+
+## §39. 降维递归 + 关键发现:残余-B ⊆ dominance(联合覆盖 Lemma A 的 d>e 段)
+
+本节是 §38.3 残余的后续攻坚。结论:**dominance 用 prop:domsuff、non-dominance 用降维递归,两者合起来覆盖 Lemma A 的 $d>e$ 段,只剩极少量(已验证为真的)实例**。这把历史上 15–45% 的 non-dominance 缺口在 $d>e$ 段压到几乎为零。
+
+### 39.1 回顾:prop:domsuff 覆盖 dominance(两个方向同一结论)
+
+**dominance 条件**:$m_L$ majorize $m_s$,即前缀和 $\sum_{i\le t}(m_L)_i\ge\sum_{i\le t}(m_s)_i$ 对所有 $t$。同次下这等价于 **$m_s$ 后缀控制 $m_L$**($N_{>t}(m_s)\ge N_{>t}(m_L)$)。两种等价表述给同一结论 $m_s\in S$:
+- **push-down**:$m_L$ 由 $m_s$ 经 $x_i\to x_j\ (j<i)$ 下推得到,$J$ 在下推下封闭 ⟹ $m_s\in J\Rightarrow m_L\in J$,逆否即 $m_s\in S$。
+- **push-up**:$m_s$ 由 $m_L$ 经 $x_i\to x_j\ (j>i)$ 上推得到,$S$ 在上推下封闭 ⟹ $m_L\in S\Rightarrow m_s\in S$。
+
+无论哪个,**dominance swap 直接得 $m_s\in S$**(对所有 $d$ 一次性成立)。故只需对 **non-dominance swap** 处理逐 $d$ 的 Lemma A。
+
+### 39.2 降维递归证明器(non-dominance 的 Lemma A)
+
+记 $MS=$ merge$(U,S)$、$ML=$ merge$(U,L)$(指数向量),不变量 **$MS\preceq_{\rm DRL}ML$ 且同次**(初始成立,因 $us\prec_{\rm DRL}uL$)。`prove(MS,ML,c,d,\text{topvar})`:
+
+1. **band 相等**:band$(c,d;MS)=$ band$(c,d;ML)$ ⟹ 证毕。
+2. **情形 1(除法)**:顶 $\ell-d$ 部分相等 $P_{\ell-d}(MS)=P_{\ell-d}(ML)$ ⟹ 由 §38.2 + cor:drlPP 得 band$_S\preceq$ band$_L$。证毕(严格)。
+3. **情形 2(顶变量)**:band$_S$ 在 topvar 上严格更多 ⟹ $\prec_{\rm DRL}$。证毕(严格)。
+4. **残余-A**:band 在 topvar 相等且 $e_{\rm topvar}(MS)=e_{\rm topvar}(ML)$ ⟹ 剥去 topvar,不变量保持,递归到 topvar$-1$。
+5. **残余-B**:$e_{\rm topvar}(MS)\ne e_{\rm topvar}(ML)$ ⟹ 剥变量破坏同次不变量,**STUCK**。
+
+递归在残余-A 链上终止(变量有限);唯一障碍是残余-B。
+
+### 39.3 关键发现:残余-B 几乎全是 dominance
+
+逐 swap 记录(`recur2.c`/`recur3.c`):卡住(残余-B)的实例**绝大多数落在 dominance swap 里**——而那些已被 prop:domsuff 覆盖。统计(每个 $n$ 约数万 swap):
+
+| $n$ | dom swap 占比 | Lemma A($d>e$)卡住数 | 其中 dominance | **non-dominance 卡住的 swap 数** |
+|---|---|---|---|---|
+| 8 | 84% | 30 | 30 | **0** |
+| 10 | 70% | 73 | 73 | **0** |
+| 12 | 57% | 71 | 71 | **0** |
+| 14 | 47% | 59 | 58 | **1** |
+| 16 | 38% | 23 | 22 | **1** |
+
+(另一随机种子下 $n=12$ 出现 2、$n=13$ 出现 1。)dominance 比例随 $n$ 下降,递归承担增长的 non-dominance 部分并几乎全部成功。
+
+### 39.4 残余的真实大小:proof-incompleteness 而非 truth gap
+
+对极少数 non-dominance 且卡住的实例(`rbdump2.c`,$n=12,13,14$),全部满足:
+$$\text{Lemma A 仍成立}\ (P^{\rm sm}_d(m_s)\prec_{\rm DRL}P^{\rm sm}_d(m_L),\ \text{dcmp}=-1),\quad m_s\in S.$$
+例(n=12):$u=x_5x_{11}^3,\ s=x_3x_5x_{10}x_{12},\ L=x_3x_6x_9^2$;$m_s=x_5x_{10}x_{11}^3x_{12}$,$m_L=x_6x_9^2x_{11}^3$;$a=x_5x_{10}x_{11}^3\prec b=x_6x_9^2x_{11}^2$(在 $x_{11}$ 处判定)。递归在 $x_{12}$ 处卡住(us 有 $x_{12}$、uL 没有),但 $a\prec b$ 在更低的 $x_{11}$ 判定——是**递归不够聪明**,Lemma A 本身为真。
+
+### 39.5 联合覆盖小结
+
+> **Lemma A($e<d\le\ell_0$)的现状**:
+> - **dominance swap**:prop:domsuff 直接给 $m_s\in S$(严格,完整)。
+> - **non-dominance swap**:降维递归(情形 1 除法 + 情形 2 $x_n$ + 残余-A 剥变量)给 $P^{\rm sm}_d(m_s)\preceq P^{\rm sm}_d(m_L)\prec\gamma_d$,**除一个 measure-tiny 残余**(non-dom ∩ 残余-B,$n\le16$ 抽样每个 $n$ ≤ 个位数实例,全部验证 Lemma A 为真、$m_s\in S$)。
+>
+> 历史上 15–45% 的 non-dominance 缺口在 $d>e$ 段被压缩到接近零。
+
+**仍未关闭**:(i) non-dom ∩ 残余-B 的最后少数实例(需更聪明的递归:残余-B 处两 band 在 topvar 相等,比较退到更低变量,但丢失了除法所需的"同次 $m_s\preceq m_L$"结构);(ii) C2($d\le e$)的 non-dominance 部分(带额外 $S$-项,本节方法未覆盖)。
