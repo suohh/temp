@@ -1576,3 +1576,1017 @@ $$\text{Lemma A 仍成立}\ (P^{\rm sm}_d(m_s)\prec_{\rm DRL}P^{\rm sm}_d(m_L),\
 > 历史上 15–45% 的 non-dominance 缺口在 $d>e$ 段被压缩到接近零。
 
 **仍未关闭**:(i) non-dom ∩ 残余-B 的最后少数实例(需更聪明的递归:残余-B 处两 band 在 topvar 相等,比较退到更低变量,但丢失了除法所需的"同次 $m_s\preceq m_L$"结构);(ii) C2($d\le e$)的 non-dominance 部分(带额外 $S$-项,本节方法未覆盖)。
+
+## §40. 本轮推进:把 Lemma A 的严格覆盖写入 tex,残余形态进一步钉死
+
+按"先关 Lemma A 的大块,再攻 C2"的策略,这轮没有声称完全证明两条 band 不等式,但把 $d>e$ 的可证明部分整理成了可引用的正式命题,已写入 `F4_support_size.tex` 的 §lowd。
+
+### 40.1 新写入 tex 的严格引理
+
+**引理(公共因子除法保持 DRL)**:若 $A\preceq_{\rm DRL}B$ 同次,$Q\mid A,B$,则
+$$A/Q\preceq_{\rm DRL}B/Q.$$
+证明很短:DRL 的判定下标是 $A,B$ 相异的最大下标;同除 $Q$ 不改变相异下标集合和该处符号。
+
+这把 §38.2 从 notes 里的观察升级为 tex 里的正式 Lemma `lem:drldiv`。
+
+### 40.2 Lemma A 的三块严格覆盖
+
+记
+$$B_s=P^{\rm sm}_d(m_s),\quad B_L=P^{\rm sm}_d(m_L),\quad
+Q_s=P_{\ell_0-d}(us),\quad Q_L=P_{\ell_0-d}(uL),\quad d>e.$$
+
+tex 中新增 Proposition `prop:atrunc-cases`:
+
+1. **公共顶补相等** $Q_s=Q_L$:
+   由 $m_s=B_sQ,\ m_L=B_LQ$ 和 $m_s\preceq_{\rm DRL}m_L$,除以公共因子 $Q$,得
+   $$B_s\preceq_{\rm DRL}B_L.$$
+   这是 Lemma A 的严格证明情形,覆盖实测 97% 以上。
+
+2. **当前最大变量直接判定**:
+   若删去更高共同变量后,当前最大下标 $r$ 上 $B_s$ 指数更大,则按 DRL 定义直接
+   $$B_s\prec_{\rm DRL}B_L.$$
+   这是 §38 的 "topvar 情形"正式化。
+
+3. **dominance 情形**:
+   若 $m_L$ majorize $m_s$,则 `prop:domsuff` 已给出 $m_s\in S$。这比 Lemma A 更强,因为一旦 $m_s$ 标准,所有低次阈值比较自动成立。故 dominance swap 不再需要逐 $d$ 证明 band inequality。
+
+### 40.3 Lemma A 的残余现在是什么
+
+删掉上述三块后,真正剩下的 Lemma A 残余同时满足:
+
+- $Q_s\ne Q_L$;
+- 最高可见变量不直接给 $B_s\prec B_L$;
+- 剥掉最高变量后,两边不再同次,所以不能直接用 "除法保持 DRL";
+- 非 dominance,所以不能用 `prop:domsuff` 一步得到 $m_s\in S$。
+
+实测到 $n\le16$:卡住实例几乎全是 dominance,已由 `prop:domsuff` 覆盖;极少数 non-dominance stuck 仍满足 $B_s\prec B_L$ 和 $m_s\in S$。因此 Lemma A 的剩余不是 truth gap,而是证明器没携带"更低下标已经判定 DRL"的 witness。下一步若继续攻 A,应把递归状态从
+
+$$MS\preceq ML\text{ 且同次}$$
+
+加强为
+
+$$\text{存在一个 lower-index witness }r\text{ 将在剥 topvar 后判定 }B_s\prec B_L,$$
+
+也就是允许 residual-B 处丢失同次除法不变量,但保留低位判定证据。
+
+### 40.4 对 C2 的影响
+
+C2 尚未推进成证明。当前判断不变:
+
+- C2 不能做成纯多重集命题,因为任意 $U,S,L,c$ 下约 5% 失败;
+- 必须用 $c=\operatorname{codeg}(uL)\le2$, $L$ 是极小生成元, $s\in S$ 三个结构输入;
+- 比较对象应保持为
+  $$B_s\preceq_{\rm DRL}\max_{\rm DRL}(P^{\rm sm}_d(m_L),P^{\rm sm}_d(s)),$$
+  不应强行退化为 $B_s\preceq B_L$。
+
+下一步最有希望的是仿照 Lemma A 的覆盖法,先把 C2 分成:
+
+1. $P^{\rm sm}_d(s)$ 已经支配 $B_s$ 的情形;
+2. 公共顶补可除的情形;
+3. dominance 直接给 $m_s\in S$ 的情形;
+4. 真正 non-dominance + 非 $s$-controlled 的残余。
+
+这样 C2 的困难会从"一条全局 band 不等式"变成可统计、可定位的少数 residual class。
+
+## §41. C2 的第一轮拆分:三类严格覆盖 + 真 residual
+
+继续 §40 的计划,这轮把 C2 也拆成若干可证明覆盖块,并写入 `F4_support_size.tex`。没有完成 C2,但把"哪些地方需要新想法"钉得更具体。
+
+### 41.1 新写入 tex 的命题
+
+记 $1\le d\le e$,
+$$B_s=P^{\rm sm}_d(m_s),\quad B_L=P^{\rm sm}_d(m_L),\quad B_0=P^{\rm sm}_d(s),$$
+以及
+$$Q_s=P_{\ell_0-d}(us),\qquad Q_L=P_{\ell_0-d}(uL).$$
+
+新增 Proposition `prop:c2trunc-cases`:
+
+1. **公共顶补相等** $Q_s=Q_L$:
+   与 Lemma A 同理,$m_s=B_sQ,\ m_L=B_LQ$,由 $m_s\preceq_{\rm DRL}m_L$ 和同除公共因子得
+   $$B_s\preceq_{\rm DRL}B_L,$$
+   因而 C2 立即成立。
+
+2. **$s$-低带直接控制**:
+   若
+   $$B_s\preceq_{\rm DRL}B_0=P^{\rm sm}_d(s),$$
+   则 C2 直接成立,因为 $B_0$ 是 max 里的第二项。
+
+3. **dominance 情形**:
+   若 $m_L$ majorize $m_s$,则 `prop:domsuff` 给出 $m_s\in S$。这比 C2 更强,因为 monotonicity 证明只需要 $m_s$ 标准;此时不必逐 $d$ 证明 C2。
+
+### 41.2 C2 真正剩余的形态
+
+删掉上述三类后,C2 residual 同时满足:
+
+- 非 dominance,不能直接由强稳定性推出 $m_s\in S$;
+- $Q_s\ne Q_L$,不能用公共因子除法从 $m_s\preceq m_L$ 推 band 比较;
+- $B_s\succ_{\rm DRL}B_0$,即 $s$ 自己的低带也压不住 $B_s$;
+- 但实验仍显示
+  $$B_s\preceq_{\rm DRL}\max(B_L,B_0).$$
+
+因此 C2 的新内容正是:在这个 residual 里,虽然 $m_L$ 和 $s$ 各自单独不一定支配 $B_s$,但二者的 max 总能支配。这个事实必须使用三条结构输入:
+
+1. $c=\operatorname{codeg}(uL)\le2$;
+2. $L$ 是极小生成元;
+3. $s\in S$ 且 $s\prec_{\rm DRL}L$。
+
+### 41.3 下一步该做的统计/证明
+
+下一步不应再测 C2 是否成立,而应测 residual 的组成:
+
+- residual 中 max 到底通常由 $B_L$ 还是 $B_0$ 取到;
+- residual 是否集中在 $c=1$ 或 $c=2$;
+- residual 中 $B_s\succ B_L$ 与 $B_s\succ B_0$ 的判定下标是否有固定位置关系;
+- $B_s$ 超过 $B_0$ 的小下标质量是否总由 $u$ 提供,而 $u$ 的这部分是否被 $\operatorname{codeg}(uL)\le2$ 限制在最多两个单位。
+
+如果最后一点成立,可能有一个直接证明:
+
+> C2 residual 中,$B_s$ 相对 $B_0$ 的"过量小下标单位"只能来自 $u$ 的前 $c\le2$ 个单位;这些单位若没有被 $m_s=P_{\ell_0}(us)$ 删除,则它们在 $uL$ 中会使 $m_L$ 的对应 band 变大,从而由 $B_L$ 这一项接管。
+
+这就是 C2 里 max 的机制: $s$ 控制来自 replacement 的小下标内容,$m_L$ 控制来自共享 multiplier $u$ 的小下标内容。需要把这句话转成严格的 merge/rank 计数不等式。
+
+## §42. C2 handoff 归约:低带 max 等价于一个接管命题
+
+这轮把 C2 的 max 结构进一步压缩成一个精确 implication,已写入 tex 为 Proposition `prop:c2handoff`。
+
+### 42.1 精确等价
+
+仍记
+$$B_s=P^{\rm sm}_d(m_s),\quad B_L=P^{\rm sm}_d(m_L),\quad B_0=P^{\rm sm}_d(s),\qquad d\le e.$$
+
+C2:
+$$B_s\preceq_{\rm DRL}\max_{\rm DRL}(B_L,B_0)$$
+
+等价于 handoff 命题:
+
+$$\boxed{\quad B_s\succ_{\rm DRL}B_0\ \Longrightarrow\ B_s\preceq_{\rm DRL}B_L.\quad}$$
+
+证明只是全序二分:
+
+- 若 $B_s\preceq B_0$,C2 自动成立;
+- 若 $B_s\succ B_0$,max 不能由 $B_0$ 提供,只能由 $B_L$ 接管,所以必须 $B_s\preceq B_L$。
+
+这一步虽然简单,但很有用:以后证明 C2 不必同时追踪 max 两项,只需分析 $s$-项失败时为什么 $m_L$-项必定成功。
+
+### 42.2 merge 解释
+
+$B_0=P^{\rm sm}_d(s)$ 是 $s$ 自己最低的 $d$ 个单位。若
+$$B_s=P^{\rm sm}_d(P_{\ell_0}(us))\succ B_0,$$
+则说明:在 merge$(U,S)$ 中,删掉前 $c=\operatorname{codeg}(uL)\le2$ 个单位后,窗口 $c+1,\dots,c+d$ 里出现了来自 $U$ 的额外小下标单位,它们把 $s$ 的某些较大下标单位挤出了窗口。也就是说,$s$ 项失败当且仅当 **$U$ 的小下标内容 overflow 进入了低带窗口**。
+
+handoff 命题说:这种 overflow 一旦发生,同一个 $U$ 和生成元 $L$ 的 merge 窗口 $B_L$ 必定至少同样小下标重,从而
+$$B_s\preceq_{\rm DRL}B_L.$$
+
+这正是 C2 的机制:
+
+- replacement 部分的小下标由 $B_0$ 控制;
+- multiplier overflow 由 $B_L$ 控制;
+- max 把两种来源拼起来。
+
+### 42.3 现在剩下该证什么
+
+C2 真 residual 已变成:
+
+> 在 $B_s\succ B_0$ 的 overflow 情形,证明 $B_s\preceq B_L$。
+
+这比原 C2 更窄,因为它只处理 `s` 项失败的情形。下一步应证明一个纯 merge 引理,形式大概是:
+
+设 $S\prec_{\rm DRL}L$, $L$ 是极小生成元, $s\in S$,且 $c=\operatorname{codeg}(uL)\le2$。若 merge$(U,S)$ 的窗口 $c+1,\dots,c+d$ 比 $S$ 自身前 $d$ 个单位更小下标重,则 merge$(U,L)$ 的同窗口 DRL-不小于它。
+
+目前我还没有这个 merge 引理的完整证明。关键仍是要把 $\operatorname{codeg}(uL)\le2$ 翻译成: $U$ 中能越过删除线并进入低带的"小下标过量"至多两单位,且这些单位在 $uL$ 中不会被 $L$ 的生成元边界吸收掉,因此会在 $B_L$ 中显性出现。
+
+## §43. overflow handoff 的 rank-count 化:剩余变成 crossing 排除
+
+继续尝试证明 §42 的 handoff:
+$$B_s\succ B_0\Longrightarrow B_s\preceq B_L.$$
+完整证明仍未闭合,但这轮把它化成了一个干净的阈值计数命题,已写入 tex 为 Proposition `prop:c2rank` 和 Remark `rmk:crossing`。
+
+### 43.1 band 的前缀计数公式
+
+对多重集/单项式 $M$,记
+$$F_M(t)=\sum_{i\le t} M_i.$$
+若 $W_{c,d}(M)$ 是排序后第 $c+1,\dots,c+d$ 个单位构成的 band,则严格有
+$$F_{W_{c,d}(M)}(t)=\min\{F_M(t),c+d\}-\min\{F_M(t),c\}.$$
+这是 order statistics 的直接计数:阈值 $\le t$ 的单位在前 $c+d$ 个里出现多少,减去在前 $c$ 个里已被删掉多少。
+
+### 43.2 handoff 的充分条件
+
+令 $B_s=W_{c,d}(U+S)$,$B_L=W_{c,d}(U+L)$。若对所有阈值 $t$ 有
+$$
+\min\{F_U(t)+F_L(t),c+d\}-\min\{F_U(t)+F_L(t),c\}
+\ge
+\min\{F_U(t)+F_S(t),c+d\}-\min\{F_U(t)+F_S(t),c\},
+$$
+则 $B_L$ 在所有前缀上 majorize $B_s$,所以
+$$B_s\preceq_{\rm DRL}B_L.$$
+
+这把 handoff 从 DRL 比较变成了阈值计数不等式。
+
+### 43.3 唯一可能失败的 crossing —— 修正:不能排除
+
+固定 $t$,设
+$$A=F_U(t),\qquad S_t=F_S(t),\qquad L_t=F_L(t).$$
+函数
+$$h_A(x)=\min\{A+x,c+d\}-\min\{A+x,c\}$$
+单调不降。因此:
+
+- 若 $L_t\ge S_t$,计数不等式自动成立。
+- 若 $L_t<S_t$,只有当区间 $[A+L_t,A+S_t]$ 穿过 active window $(c,c+d)$ 时才可能失败。
+
+也就是说唯一危险形态是:
+$$\boxed{\quad A+L_t<c+d\quad\text{且}\quad A+S_t>c.\quad}$$
+
+这就是 rank-count 充分条件唯一可能失败的位置。
+
+**重要修正**:我临时写了 `/tmp/c2_cross` 检查 crossing,发现 crossing **确实会出现**,但 handoff 仍成立。样例($n=10$):
+
+$$u=x_2x_8x_9,\quad L=x_3x_6^2,\quad s=x_2x_5x_{10},\quad c=2,d=3,$$
+$$B_s=x_5x_8x_9,\quad B_L=x_6^2x_8,\quad B_0=x_2x_5x_{10}.$$
+
+在阈值 $t=5$:
+$$A=F_U(5)=1,\quad F_L(5)=1,\quad F_S(5)=2,$$
+故
+$$A+F_L(5)=2<c+d=5,\qquad A+F_S(5)=3>c=2,$$
+crossing 出现,rank-count majorization 失败。但
+$$B_s=x_5x_8x_9\prec_{\rm DRL}x_6^2x_8=B_L,$$
+因为 DRL 由更高下标($x_9/x_8/x_6$)补偿判定。
+
+所以"证明 codeg≤2 排除 crossing"是**过强且错误**的路线。tex 中已改成:rank-count criterion 只覆盖 non-crossing regime;crossing 是真实 residual,但有高下标补偿。
+
+### 43.4 下一步要证明的具体命题
+
+现在 C2 handoff 分成两块:
+
+1. **non-crossing**:由 Proposition `prop:c2rank` 严格覆盖;
+2. **crossing residual**:需要证明小阈值处的 prefix deficit 会在更高下标处被补偿,从而 DRL 仍有 $B_s\preceq B_L$。
+
+新的目标命题应改为:
+
+> 在 overflow residual $B_s\succ B_0$ 中,若某个阈值 $t$ 出现 crossing,则存在更高阈值/更高变量 $r>t$ 使 $B_s$ 在 DRL 判定下比 $B_L$ 更小,即在最大相异下标处 $B_s$ 指数更大。
+
+从样例看,补偿来源是: $s$ 比 $L$ 多的小下标质量使 $B_s$ 在低阈值更重,但 $s\prec_{\rm DRL}L$ 同时把 $s$ 的质量推向更高变量;这些高变量进入 $B_s$,最终在 DRL 最大相异下标处压过 $B_L$。也就是说 C2 的核心不是 prefix-majorization,而是"低位亏损由高位 DRL 优势补偿"。
+
+下一步应统计 crossing residual 的判定下标:低阈值 crossing 的 $t$ 与最终 DRL 判定变量 $r$ 的关系。如果总有 $r>t$ 且 $r$ 来自 $s\prec L$ 的最大差异下标,就可能用 DRL 定义直接证明 crossing residual。
+
+## §44. crossing residual 的补偿结构:判定下标总在 $(t,\tau]$
+
+继续 §43 的新方向,我临时写了 `/tmp/c2_comp` 统计 crossing residual。记:
+
+- $t$ = 第一个 prefix-count 失败阈值;
+- $r$ = $B_s$ 与 $B_L$ 的 DRL 最大相异下标;
+- $\tau$ = $s$ 与 $L$ 的 DRL 最大相异下标,即 $s_\tau>L_\tau$ 且 $s_i=L_i$ 对 $i>\tau$。
+
+### 44.1 数据
+
+每个 $n$ 随机 $10^6$ 个 relevant swap:
+
+| $n$ | overflow residual | crossing residual | handoff bad | $r>t$ | $\tau>t$ | $r\le\tau$ |
+|---|---:|---:|---:|---:|---:|---:|
+| 8  | 2100 | 11 | 0 | 11/11 | 11/11 | 11/11 |
+| 10 | 1548 | 24 | 0 | 24/24 | 24/24 | 24/24 |
+| 12 | 1141 | 54 | 0 | 54/54 | 54/54 | 54/54 |
+
+直方图显示 $r-t$ 为正且通常不小:
+
+- $n=8$: 全部 $r-t=3$;
+- $n=10$: $r-t=2,4,5$;
+- $n=12$: $r-t=3,4,5,6,7$。
+
+关键模式:
+$$\boxed{\quad t<r\le\tau,\qquad (B_s)_r>(B_L)_r,\quad (B_s)_q=(B_L)_q\ (q>r).\quad}$$
+
+也就是说 crossing 在低阈值 $t$ 处让 prefix-majorization 失败,但最终 DRL 判定由更高下标 $r$ 补偿,且这个 $r$ 位于 $s\prec L$ 的差异区间内。
+
+### 44.2 写入 tex 的严格判据
+
+新增 Proposition `prop:rightcomp`:
+
+若存在 $r>t$ 满足
+$$
+(B_s)_r>(B_L)_r,\qquad (B_s)_q=(B_L)_q\quad(q>r),
+$$
+则按 DRL 定义立即
+$$B_s\prec_{\rm DRL}B_L.$$
+
+这是 tautological 但有用:它把 crossing residual 的证明目标变成"构造 rightmost compensation index $r$"。
+
+新增 Observation `obs:crosscomp`:记录实验事实 $t<r\le\tau$。
+
+### 44.3 新的证明目标
+
+现在 C2 handoff 的证明结构应是:
+
+1. 若 non-crossing,由 rank-count / prefix-majorization 证明 $B_s\preceq B_L$。
+2. 若 crossing,证明存在 rightmost compensation index $r\in(t,\tau]$,从而由 DRL 直接得 $B_s\prec B_L$。
+
+这比"排除 crossing"更合理,也更贴近 DRL: crossing 是低阈值亏损,但 $s\prec L$ 的真正信息是最高差异下标 $\tau$ 处 $s$ 指数更大。需要证明这部分高位优势会存活到 band $B_s$ 中,且不会被 $U/L$ 在更高位置制造反向差异。
+
+### 44.4 可能的证明路径
+
+设 crossing 在阈值 $t$ 出现,即 $F_S(t)>F_L(t)$ 且窗口穿过 $(c,c+d)$。因为 $s\prec L$,在最大差异下标 $\tau$ 有 $S_\tau>L_\tau$。实验显示 $\tau>t$。直觉上:
+
+- crossing 说明 $s$ 在低阈值多出来的单位进入了窗口;
+- 总次数相同,这些低位多出来的单位必须由某些高位单位减少来平衡;
+- DRL 条件 $s\prec L$ 保证最高平衡点是 $s$ 多、$L$ 少的 $\tau$;
+- 因为 $c\le2$ 且窗口只删前 $c$ 个单位,$\tau$ 处的优势没有被删掉,会在 $B_s$ 中作为 rightmost compensation 出现。
+
+要严格化,需要证明两个不等式:
+
+1. $\tau>t$: 若 $\tau\le t$,则 $s$ 与 $L$ 在所有高于 $t$ 的变量相同,低阈值 crossing 会强迫 $s$ 在 DRL 上不小于/不可能标准(这里应可用 $s\in S$, $L$ 生成元);
+2. $\tau$ 或某个 $r\le\tau$ 落入 band 差异: 即 $S$ 在 $(t,\tau]$ 的净优势不会全部被 $U$ 的相同内容或删除线 $c$ 吃掉。
+
+这就是下一步要攻的具体组合命题。
+
+## §45. crossing residual 的 prefix-walk 形式：$\tau>t$ 已证，剩最后一步符号
+
+这轮把 §44 的补偿目标继续压缩，并把能证的部分写入 tex。
+
+### 45.1 $\tau>t$ 严格证明
+
+crossing 必然有 $F_S(t)>F_L(t)$。若 $\tau\le t$,则 $s,L$ 在所有 $>t$ 的变量上指数相同。又 $\deg s=\deg L$,所以
+$$F_S(t)=\deg s-\sum_{i>t}S_i=\deg L-\sum_{i>t}L_i=F_L(t),$$
+矛盾。因此
+$$\boxed{\tau>t.}$$
+
+这已经写入 tex 为 Lemma `lem:tauabove`。
+
+### 45.2 prefix-difference walk
+
+定义 crossing 区间上的前缀差:
+$$D(q)=F_{B_s}(q)-F_{B_L}(q),\qquad t\le q\le\tau.$$
+
+则:
+
+- $D(t)>0$: 这是 crossing / rank-count 失败在阈值 $t$ 的定义;
+- $D(\tau)=0$: 因为 $s,L$ 在 $>\tau$ 相同且同次,所以 $F_{U+S}(\tau)=F_{U+L}(\tau)$;代入 band 前缀公式得到 $F_{B_s}(\tau)=F_{B_L}(\tau)$。
+
+此外在 $q>\tau$ 两个 band 的前缀计数也相同,所以最大相异下标必在 $(t,\tau]$。令
+$$\Delta(q)=D(q)-D(q-1)=(B_s)_q-(B_L)_q.$$
+
+于是
+$$B_s\prec_{\rm DRL}B_L
+\quad\Longleftrightarrow\quad
+\text{$(t,\tau]$ 上最后一个非零 }\Delta(q)\text{ 为正}.
+$$
+
+这写入 tex 为 Proposition `prop:prefixwalk`。
+
+### 45.3 新的最小剩余命题
+
+C2 crossing residual 现在等价于一个非常具体的 walk 断言:
+
+> $D$ 从正值 $D(t)>0$ 出发,在 $\tau$ 回到 $0$。证明它回到 $0$ 的最后一步是向上($\Delta>0$),而不是向下。
+
+注意这不是一般 walk 性质。一般从正数回到 0 的最后一步通常是负的;这里实验显示最后一个**非零 band 指数差**为正,原因必须来自 band 选择和 $s\prec L$ 的高位结构。也就是说,最后一个非零 $\Delta$ 不是 $D$ 从正到零的最后下降点,而是高下标方向上看的最后差异点;这正是 DRL 的方向。
+
+下一步应尝试把 $D$ 改成后缀差
+$$E(q)=\sum_{i\ge q}\big((B_s)_i-(B_L)_i\big),$$
+因为 DRL 最大相异下标天然是后缀对象。前缀形式给了端点 $D(t)>0,D(\tau)=0$;后缀形式可能直接给 "rightmost nonzero is positive"。
+
+## §46. active-window 化:后缀单调性失败,但剩余变成一维区间裁剪
+
+这轮继续推进 crossing residual。先做了临时实验 `/tmp/c2_suffix`:
+
+- `n=8,10,12` 各跑 200 万随机 relevant swaps;
+- 只统计 overflow 且 prefix rank-count crossing 的实例;
+- 结果仍是 handoff bad = 0;
+- 但后缀差
+  $$E(q)=\sum_{i\ge q}\big((B_s)_i-(B_L)_i\big)$$
+  并不全程非负或非正。
+
+典型形状仍是:
+$$\Delta_B:\quad -2,0,\ldots,0,+1,0,$$
+或更复杂的
+$$0,-2,-1,+1,+1,0.$$
+
+所以“证明 suffix walk 单调/同号”这条路不成立。DRL 成立不是因为整个后缀差有固定符号,而是因为**最右侧非零 band 指数差为正**。
+
+### 46.1 严格的 active-window 公式
+
+记 active rank window
+$$I_{c,d}=\{c+1,\dots,c+d\}.$$
+
+对任意 multiset/monomial $M$,定义 $x_q$ 在排序后的 $M$ 中占据的 rank interval:
+$$R_M(q)=\{F_M(q-1)+1,\dots,F_M(q)\}.$$
+
+则严格有:
+$$\bigl(W_{c,d}(M)\bigr)_q=|R_M(q)\cap I_{c,d}|.$$
+
+证明只是定义展开:排序后 $x_q$ 的所有 copy 正好连续占据这些 rank,band 只保留 $I_{c,d}$。
+
+这已写入 tex 为 Lemma `lem:activewindow`。
+
+### 46.2 crossing residual 的一维化
+
+令
+$$M_s=U+S,\qquad M_L=U+L.$$
+
+由 active-window 公式,
+$$
+(B_s)_q-(B_L)_q
+=|R_{M_s}(q)\cap I_{c,d}|-|R_{M_L}(q)\cap I_{c,d}|.
+$$
+
+因此 crossing handoff 的最后剩余命题等价于:
+
+> 若
+> $$r=\max\{q\in(t,\tau]: |R_{M_s}(q)\cap I_{c,d}|\ne |R_{M_L}(q)\cap I_{c,d}|\},$$
+> 则
+> $$|R_{M_s}(r)\cap I_{c,d}|>|R_{M_L}(r)\cap I_{c,d}|.$$
+
+这已写入 tex 为 Proposition `prop:activecross`。
+
+### 46.3 新的证明目标
+
+C2 crossing residual 现在不再是一个 monomial 比较问题,而是一个一维 interval-clipping 问题:
+
+- 两条累计曲线 $F_{U+S}$ 与 $F_{U+L}$;
+- 固定窗口 $I_{c,d}$;
+- 每个指数 $q$ 对应一个 rank interval $R(q)$;
+- 需要证明最右侧非对称交窗口的 interval 偏向 $U+S$。
+
+注意实验还显示:
+
+- rightmost compensation $r$ 总在 $(t,\tau]$;
+- $r$ 常常不是 $S_r>L_r$ 的位置,所以不能简单说“$s$ 在 $r$ 自己多一个变量”;
+- 补偿经常来自窗口裁剪: $U+S$ 和 $U+L$ 的 cumulative ranks 在高处相同,但对应 interval 与 $I_{c,d}$ 的交法不同。
+
+下一步最合理的目标:
+
+> 利用 $c\le2$ 证明 active window 的右端/左端最多只被极少数低 rank 单位扰动;在 crossing 已发生且 $\tau>t$ 的条件下,最右侧还未完全同步的 interval 必须是 $M_s$ 多交窗口,而不是 $M_L$ 多交窗口。
+
+换句话说,要证明一个纯一维断言:
+
+$$F_{M_s}(\tau)=F_{M_L}(\tau),\quad F_{M_s}(t)>F_{M_L}(t),\quad s\prec L,\quad c\le2$$
+
+加上 minimal-generator/standard 的边界条件,推出 active-window rightmost asymmetry 的符号为正。
+
+## §47. final-return 判据:最右侧符号等价于回零前一刻为负
+
+继续 §46 的 active-window 路线。这轮得到一个很有用的等价转化,并写入 tex。
+
+### 47.1 用窗口前缀函数重写 $D$
+
+定义
+$$\psi(x)=\min\{x,c+d\}-\min\{x,c\}.$$
+
+它表示前 $x$ 个 sorted ranks 中有多少落在 active window
+$$I_{c,d}=\{c+1,\dots,c+d\}.$$
+
+于是
+$$D(q)=F_{B_s}(q)-F_{B_L}(q)
+=\psi(F_{U+S}(q))-\psi(F_{U+L}(q)).$$
+
+这是 band 前缀公式的更紧凑写法。
+
+### 47.2 final-return criterion
+
+令
+$$r=\max\{q\in(t,\tau]:(B_s)_q\ne(B_L)_q\}.$$
+
+因为 $q>r$ 无 band 指数差,而 $D(\tau)=0$,所以必有
+$$D(r)=0.$$
+
+又
+$$D(r)-D(r-1)=(B_s)_r-(B_L)_r.$$
+
+因此
+$$
+B_s\prec_{\rm DRL}B_L
+\quad\Longleftrightarrow\quad
+(B_s)_r>(B_L)_r
+\quad\Longleftrightarrow\quad
+D(r-1)<0.
+$$
+
+这已写入 tex 为 Proposition `prop:finalreturn`。
+
+意义: 不必直接构造 $r$ 处的正差;只需证明在最后回到 $0$ 前,walk 位于负侧。
+
+### 47.3 negative-prefix active-slope criterion
+
+写
+$$X_s=F_{U+S}(r-1),\qquad X_L=F_{U+L}(r-1).$$
+
+若
+$$X_s<X_L$$
+且区间 $(X_s,X_L]$ 穿过 active window:
+$$ (X_s,X_L]\cap I_{c,d}\ne\varnothing, $$
+则 $\psi(X_s)<\psi(X_L)$,从而
+$$D(r-1)<0,$$
+再由 final-return criterion 得
+$$B_s\prec_{\rm DRL}B_L.$$
+
+这已写入 tex 为 Proposition `prop:negslope`。
+
+### 47.4 实验支持与新的最终障碍
+
+临时程序 `/tmp/c2_endpoint` 统计 crossing residual:
+
+| $n$ | crossing | handoff bad | final shape bad | right-shift-left | right-edge-cut |
+|---:|---:|---:|---:|---:|---:|
+| 8 | 28 | 0 | 0 | 28 | 28 |
+| 10 | 64 | 0 | 0 | 64 | 61 |
+| 12 | 179 | 0 | 0 | 179 | 158 |
+
+其中:
+
+- `right-shift-left`: 在最终判定 $r$ 前,累计位置满足 $F_{U+S}(r-1)\le F_{U+L}(r-1)$ 且 $F_{U+S}(r)\le F_{U+L}(r)$;所有 crossing 都满足。
+- `right-edge-cut`: 更强的常见机制,即 $U+L$ 的 interval 越过窗口右端 $c+d$,而 $U+S$ 少越过或不越过;这覆盖大多数但不是全部,因为有少数 $r=\tau$ 的情形由 $S_\tau>L_\tau$ 直接贡献。
+
+所以当前最小剩余命题可写成:
+
+> 在 crossing residual 的最终非对称 index $r$ 前,证明
+> $$F_{U+S}(r-1)<F_{U+L}(r-1)$$
+> 且这个差异被 active window 看见。
+
+直觉解释:
+
+- crossing 在低阈值 $t$ 处给 $U+S$ 更多前缀,即 $F_{U+S}(t)>F_{U+L}(t)$;
+- 但 $s\prec L$ 强迫高位 $\tau$ 处补偿,使两者在 $\tau$ 回到同一累计值;
+- 在最后一个还影响 band 的位置前,累计曲线已经反转到 $U+S$ 落后于 $U+L$;
+- 这使 $U+S$ 的 rank interval 相对左移,少被窗口右端裁掉,于是最右侧 band 差为正。
+
+下一步要把“累计曲线已经反转且被窗口看见”从实验事实变成结构证明。可能需要用:
+
+- $c=\operatorname{codeg}(uL)\le2$: active window 靠近删除边界,只能被极少数前置单位影响;
+- $L\in G(J)$: $L$ 是标准集边界,其低位 mass 不能任意移动;
+- $s\in S$ 且 $s\prec L$: crossing 低位优势必须由更高位优势偿还。
+
+## §48. tail-negative criterion:窗口可见性可自动消去
+
+继续 §47。先检查 `negative-prefix active-slope` 是否真覆盖所有 crossing residual。临时程序 `/tmp/c2_negslope` 在更大样本中得到:
+
+| $n$ | crossing | negslope ok | negslope fail |
+|---:|---:|---:|---:|
+| 8 | 35 | 35 | 0 |
+| 10 | 83 | 83 | 0 |
+| 12 | 229 | 229 | 0 |
+
+进一步统计发现所有 crossing residual 都满足
+$$H(r-1):=F_S(r-1)-F_L(r-1)<0.$$
+
+这提示可以把 §47 的窗口可见条件删掉。事实上可严格证明:
+
+> 若 $r$ 是最后一个 band 指数不同的位置,且
+> $$F_S(r-1)<F_L(r-1),$$
+> 则 $B_s\prec_{\rm DRL}B_L$。
+
+证明:
+
+- 因为 $M_s=U+S,M_L=U+L$,所以
+  $$F_{M_s}(r-1)<F_{M_L}(r-1).$$
+- $\psi$ 单调,故
+  $$D(r-1)=\psi(F_{M_s}(r-1))-\psi(F_{M_L}(r-1))\le0.$$
+- 由 $r$ 的定义,$(B_s)_r-(B_L)_r\ne0$。
+- 又 final-return 给 $D(r)=0$,所以
+  $$D(r)-D(r-1)\ne0.$$
+- 因此 $D(r-1)$ 不可能等于 $0$,只能
+  $$D(r-1)<0.$$
+- 再由 final-return criterion 得
+  $$B_s\prec_{\rm DRL}B_L.$$
+
+这已写入 tex 为 Proposition `prop:tailnegative`。
+
+### 48.1 当前最小剩余命题
+
+C2 crossing residual 现在只剩:
+
+> 证明最后一个 band-difference index $r$ 满足
+> $$F_S(r-1)<F_L(r-1).$$
+
+这是纯 $s,L$ 前缀 walk 命题,已经不显式涉及 active window。
+
+已知端点:
+
+- crossing 起点 $t$ 有
+  $$F_S(t)>F_L(t);$$
+- DRL 决策点 $\tau$ 有 $S_\tau>L_\tau$ 且 $S_i=L_i(i>\tau)$,所以
+  $$F_S(\tau-1)<F_L(\tau-1).$$
+
+因此 $H(q)=F_S(q)-F_L(q)$ 从正侧开始,在 $\tau-1$ 已经为负。现在要证:
+
+> band 的最后可见差异 $r$ 只能出现在 $H$ 已经进入负侧之后。
+
+这比之前的 active-window 版本更干净。下一步应研究“若 $H(r-1)\ge0$ 会发生什么”: 直觉上这会使 $r$ 处的最后 band 差异偏向 $B_L$,从而造成 handoff 反例;但实验显示在真实 residual 中不发生。需要把这个反设与 $c\le2$ 或 minimal-generator 边界矛盾起来。
+
+### 48.2 临时验证程序已归档
+
+按要求,把本轮 proof search 用的 crossing-tail 验证程序放进当前目录:
+
+```bash
+gcc -O2 -std=c11 verify_c2_crossing_tail.c -lm -o verify_c2_crossing_tail
+./verify_c2_crossing_tail 10 200000 3
+```
+
+其中参数为:
+
+- `n`;
+- 随机 trials;
+- 打印 crossing 样例数。
+
+快速自检输出与之前 `/tmp` 程序口径一致:
+
+```text
+SUMMARY n=10 trials=200000 overflow=327 crossing=10 handoff_bad=0
+lastpos=10 shape_bad=0 negslope_ok=10 negslope_fail=0
+Hrm1_neg=10 Hrm1_nonneg=0 last_nonneg_before_r=10 last_nonneg_eq_rminus=0 last_nonneg_after=0
+right_edge_cut=10 same_negative_H=10
+```
+
+### 48.3 last-nonnegative reduction
+
+定义
+$$H(q)=F_S(q)-F_L(q).$$
+
+在 crossing residual 中,$H(t)>0$,且由 $s\prec_{\rm DRL}L$ 得 $H(\tau-1)<0$。定义最后非负前缀点
+$$\rho=\max\{q\in[t,\tau-1]:H(q)\ge0\}.$$
+
+则如果最后 band-difference index $r$ 满足
+$$r>\rho+1,$$
+就有 $r-1>\rho$,从而
+$$H(r-1)<0,$$
+于是由 `prop:tailnegative` 直接得到
+$$B_s\prec_{\rm DRL}B_L.$$
+
+这已写入 tex 为 Proposition `prop:lastnonneg`。
+
+因此剩余核心进一步变成:
+
+> 证明 active band 的最后可见差异不可能发生在 $\rho$ 或 $\rho+1$ 附近;也就是说,在 $H$ 最后一次从非负进入负值之后,band 还必须能看到一个更高位置的差异。
+
+这一步是真正需要 $c\le2$、$s\in S$、$L\in G(J)$ 的地方。前面的所有归约基本是 order/rank-window tautology,还没有用到边界结构。
+
+
+---
+
+## §49. C2 crossing residual 的反证化:精确靶子 + 一条死路 + handoff-bad 的 $u$-溢出归约
+
+延续 §47–48。本节不声称证明了 C2,但做了三件实质的事:(i) 把"最后剩的一步"从 §48 的 $H(r-1)<0$ **收紧**为一个充要的 σ-饱和不等式,并指出 §48 的 $H(r-1)\le0$ 充分但**非必要**(约 2% 实例靠窗口 slack 而非 $H<0$ 过关);(ii) 用数据**证死**了一条本来很诱人的捷径($\sigma_L\ge\tau$);(iii) 把 handoff-bad 反证到一个精确、可测的 **$u$-溢出**条件,把 §42.2 含混的 "overflow" 量化。验证程序 `verify_c2_crossing_tail.c`(已随附,本节新增 SIGMA / SIGTAU / OVERFLOW 三组统计)。
+
+### 49.1 σ-饱和重述:充要靶子
+
+对 $M\in\{us,uL\}$ 定义**窗口饱和指标**
+$$\sigma_M=\min\{q:\ F_U(q)+F_M(q)\ge c+d\}$$
+(累计计数首次触到 active window 右端 $c+d$ 的变量下标)。则严格有(由 active-window 公式 lem:activewindow,band 顶端单位即落在 rank $c+d$ 处):
+$$\boxed{\ B_s\preceq_{\rm DRL}B_L\ \Longleftrightarrow\ \sigma_s\ge\sigma_L.\ }$$
+**证**:$B_M$ 的最高下标 = 占据 rank $c+d$ 的变量 = $\sigma_M$。若 $\sigma_s>\sigma_L$,则在下标 $\sigma_s$ 处 $(B_s)_{\sigma_s}\ge1$ 而 $(B_L)_{\sigma_s}=0$(此时 $U+L$ 已在更低下标饱和),最高相异下标处 $B_s$ 指数更大 ⟹ $B_s\prec_{\rm DRL}B_L$;$\sigma_s<\sigma_L$ 对称给 $B_s\succ_{\rm DRL}B_L$;$\sigma_s=\sigma_L$ 时顶端相同,递归到更低下标。∎
+
+于是 handoff($B_s\preceq B_L$)**充要**于 $\sigma_s\ge\sigma_L$,即
+$$F_U(\sigma_L-1)+F_S(\sigma_L-1)<c+d.$$
+因 $\sigma_L$ 的定义给 $F_U(\sigma_L-1)+F_L(\sigma_L-1)\le c+d-1$,记窗口 slack
+$$\epsilon=(c+d-1)-\big(F_U(\sigma_L-1)+F_L(\sigma_L-1)\big)\ge0,$$
+则**充要靶子**为
+$$\boxed{\ H(\sigma_L-1)\le\epsilon,\qquad H(q)=F_S(q)-F_L(q).\ }$$
+
+> **对 §48 的修正**:§48 取 $\epsilon=0$,即证 $H(\sigma_L-1)\le0$(等价于 $H(r-1)<0$)。这**充分但非必要**:实测 $n=12$ 出现 $H(\sigma_L-1)>0$ 但 $\sigma_s\ge\sigma_L$ 仍成立的实例(靠 $\epsilon\ge1$ 过关)。所以最终命题应以 σ-饱和形式 $\sigma_s\ge\sigma_L$ 为准,$H(\sigma_L-1)\le0$ 只是覆盖约 98% 的干净充分条件。
+
+### 49.2 死路:$\sigma_L\ge\tau$ 不成立
+
+一个诱人的捷径:若 $\sigma_L\ge\tau$($\tau$ = $s,L$ 的 DRL 最大相异下标),则因 $H(\tau-1)<0$ 且 $H(q)=0\,(q\ge\tau)$,立刻有 $H(\sigma_L-1)\le0$,靶子自动成立。**但数据否决**:在所有 crossing residual 中
+$$\sigma_L<\tau\quad(\text{恒成立};\ n=10:\,40/40,\ n=12:\,41/41).$$
+机制清楚:band 顶端 rank $\le c+d\le e+2$ 偏低,而 $\tau$ 是 $L$ 高位质量与 $s$ 偿还点所在、偏高。所以 $\sigma_L$ 严格落在 $(0,\tau)$ **内部**,证明**必须**在 $H$ 仍可能为正的区间里运作,不能靠"band 顶在分歧点之上"。
+
+进一步分类 $\sigma_L-1$ 相对 $H$ 正性区间的位置(SIGTAU_WHY):绝大多数($n=10:\,37/40$,$n=12:\,32/41$)$\sigma_L-1$ 落在 $H$ **最后一次转负之后**(after_lastpos),少数(other:$3,9$)仍在正/混合区,靠 slack $\epsilon$ 过关。这解释了为何 §48 的 $H(r-1)<0$ 路线覆盖大多数但偶有漏网。
+
+### 49.3 handoff-bad 的 $u$-溢出归约(本节主要结构进展)
+
+本节把"为什么 handoff 不会坏"反证到一个**只关于 $u$ 低位计数**的条件,使 §42.2 的含混 "overflow" 精确化。
+
+回忆全部被分析的 residual 都满足 $B_s\succ_{\rm DRL}B_0$(代码的 `overflow` 过滤,即"$s$-项失败"),且 handoff-bad ⟺ $B_s\succ_{\rm DRL}B_L$ ⟺ $\sigma_s<\sigma_L$。
+
+**断言(溢出刻画)**:$B_s\succ_{\rm DRL}B_0$ ⟹(模并列)存在 band 位置 $i\le d$ 使
+$$F_U\big(s_{(i)}\big)\ge c+1,$$
+即 $u$ 在某第 $i$ 个 band 单位的下标之下,塞了**多于 $c$ 个**单位。
+**推导**:$(B_s)_i\le(B_0)_i=s_{(i)}$ ⟺ $M_s=U+S$ 在下标 $\le s_{(i)}$ 有 $\ge c+i$ 个单位 ⟺ $F_U(s_{(i)})+F_S(s_{(i)})\ge c+i$;无并列时 $F_S(s_{(i)})=i$,故 $F_U(s_{(i)})\ge c$,严格处给 $\ge c+1$。∎
+
+**数值确认**(OVERFLOW 统计,均匀采样 swap、$\operatorname{codeg}(uL)\le2$):
+| $n$ | crossing | $F_U(\sigma_s)\ge c$ | 溢出深度 $\max_i F_U(s_{(i)})>c$ |
+|---:|---:|---:|---:|
+| 10 | 40 | 40/40 | 40/40 |
+| 12 | 41 | 41/41 | 41/41 |
+
+即在 100% 的相关 residual 里,$u$ 的低位质量确实**越过 $c$ 条删除线溢入 band**。这正是 §42.2 所说的机制,现在是一个被测量的精确量,而非比喻。
+
+### 49.4 真正剩下的 crux(尚未合拢)
+
+把上面拼起来,C2 / monotonicity 的全部困难现在精确地是:
+
+> **命题(C2 crux,σ-形式)** 设 $L\in G(J)$ 极小生成元、$s\in S$、$\deg s=\deg L=e$、$s\prec_{\rm DRL}L$,$u$ 任意,$c=\operatorname{codeg}(uL)\le2$,$1\le d\le e$。若 $B_s\succ_{\rm DRL}B_0$(即 $u$ 的低位溢出深度 $>c$),则
+> $$\sigma_s\ge\sigma_L,\qquad\text{等价地 } F_{us}(\sigma_L-1)<c+d.$$
+
+尚未用到的杠杆,正是接下来该用的:
+
+1. **$\operatorname{codeg}(uL)=c$ 是"恰好"而非"至多"**:删 $c-1$ 个最小单位后 $P_{\ell_0+1}(uL)\notin S$。这是 $uL$ 低位的**紧性**条件——$u$ 的低位溢出虽 $>c$,但叠加 $L$ 后只差一点点就标准,意味着 $L$ 的低位边界恰好"吸收"了溢出的一部分。要把这条紧性翻译成对 $\sigma_L$ 的下界。
+2. **$L\in G(J)$ 的边界极值性**:$\gamma_e\preceq_{\rm DRL}L$,$L$ 在次数 $e$ 上是楼梯外拐角,低位 profile 是该次数的极值。
+3. **$s\in S$ 的 γ-约束**:$P^{\rm sm}_k(s)\prec\gamma_k$ 限制 $s$ 低位不能太重。
+
+**直觉的合拢方式**:溢出来自 $u$(被 $c\le2$ 限制为多于 $c$ 但仍有限);$s$ 相对 $L$ 的低位领先(crossing)被 $s\in S$ 的 γ-约束封顶;而 $L$ 作为生成元,其低位边界恰好使 $uL$ 在 rank $c+d$ 处的饱和**不早于** $us$。把这三者定量化即闭合 $\sigma_s\ge\sigma_L$。
+
+### 49.5 建议的下一步(具体、可执行)
+
+- **先证 $c=1$**:residual 集中在小 $c$;$c=0$ 是 non-crossing(平凡)。$c=1$ 时溢出深度 $\ge2$,删除线只删 1 个,$L$ 边界只需吸收 1 个单位,配置最少,最可能给出干净反证。拿下 $c=1$ 能验证 §49.4 的三杠杆机制是否正确,再推 $c=2$。
+- **反证方向**:设 $\sigma_s<\sigma_L$,则 $us$ 在 $<\sigma_L$ 已有 $\ge c+d$ 个单位而 $uL$ 只有 $\le c+d-1$ 个,$\Rightarrow F_S(\sigma_L-1)>F_L(\sigma_L-1)$;结合溢出 $F_U(s_{(i)})\ge c+1$ 与 $\operatorname{codeg}(uL)=c$ 的紧性,目标是推出 $s\notin S$ 或 $L\notin G(J)$ 或 $\operatorname{codeg}(uL)\ge c+1$ 之一。
+- **新统计**(若继续):在 residual 中测 $\sigma_L$ 处 $L$ 吸收的低位单位数(= 删 $c-1$ 后非标准的"见证生成元"次数与位置),验证它是否恰好补上 $us$ 与 $uL$ 在 rank $c+d$ 的差;以及 $c=1$ 与 $c=2$ 子样本是否需要不同论证。
+
+### 49.6 诚实状态(本节)
+
+- **进展**:充要靶子收紧为 σ-饱和形式;证死了 $\sigma_L\ge\tau$ 捷径;handoff-bad 反证到精确 $u$-溢出条件(深度 $>c$,100% 确认);把 crux 的三个未用杠杆(codeg 恰好性、生成元边界、$s$ 的 γ-约束)清楚隔离。
+- **未合拢**:σ-形式 C2 crux 仍未证。本节把困难从"一条 band 不等式"进一步定位到"$u$-溢出 + codeg 紧性 ⟹ 窗口饱和不反超",但**没有**给出从三杠杆到 $\sigma_s\ge\sigma_L$ 的推导。这一步仍是全链($\Theta(\sqrt n\,2^n)\Leftarrow$ monotonicity $\Leftarrow(\star)\Leftarrow$ C2 + Lemma A)里唯一未严格的实质内核(连同 Lemma A 的 non-dom∩residual-B 残尾与 Fact gammaclean 的中段 $\gamma_d\in J$)。
+
+### 49.7 本节验证命令
+
+```bash
+gcc -O2 -std=c11 verify_c2_crossing_tail.c -lm -o verify_c2_crossing_tail
+./verify_c2_crossing_tail 10 1500000 0      # SIGMA/SIGTAU/OVERFLOW 三组统计
+./verify_c2_crossing_tail 12  800000 0
+```
+输出口径(摘）:`SIGMA sig_s>=sig_L=40 sig_s<sig_L=0`(σ-饱和恒成立)；`SIGTAU sigL>=tau=0 sigL<tau=40`(捷径死)；`OVERFLOW depth<=c=0 depth>c=40`(溢出深度恒 $>c$)。
+
+
+---
+
+## §50. C2 的 $d=1$ 无条件证明 + 困难精确定位到 $d\ge2$ + dominance/raising-move 机制
+
+延续 §49。本轮有三项实质结果:(i) **完整证明** C2 handoff 在 $d=1$ 时成立,且**无条件**(不需 $s\in S$、$L\in G(J)$、$c\le2$,纯组合);(ii) 用判别实验把 C2 的全部困难**精确定位**到 $d\ge2$,并证实 $d\ge2$ **必须**用理想结构;(iii) 用 DRL≠dominance 的 raising-move 图像,解释为什么 dominance 情形易、crossing(non-dominance)情形是真正硬核。随附两个独立验证程序 `pure_sigma.c`(纯组合)、`check_d1.c`(真实理想数据)。
+
+### 50.1 定理($d=1$ handoff,无条件)
+
+> **定理(C2 at $d=1$)** 设 $u$ 任意单项式,$s,L$ 同次单项式($\deg s=\deg L=e$),$s\prec_{\rm DRL}L$;$c\ge0$,窗口 $I_{c,1}$。记 $B_s=W_{c,1}(us)$、$B_0=P^{\rm sm}_1(s)$、$B_L=W_{c,1}(uL)$(各为单变量)。若 $B_s\succ_{\rm DRL}B_0$(overflow),则
+> $$B_s\preceq_{\rm DRL}B_L.$$
+
+**证明.** $d=1$ 时三个 band 都是单个变量。记 $B_s=x_p$,其中 $p=\sigma_s$ 是 $us$ 第 $(c+1)$ 小单位的下标;$B_0=x_{s_{(1)}}$,$s_{(1)}$ 是 $s$ 的最小下标。
+单变量 DRL:$x_p\succ_{\rm DRL}x_{s_{(1)}}\iff p<s_{(1)}$。故 overflow 给
+$$p<s_{(1)}.$$
+于是 $us$ 在下标 $\le p$ 的所有单位**全部来自 $u$**($s$ 在 $\le p<s_{(1)}$ 无单位),且数目 $\ge c+1$(因第 $(c+1)$ 小单位已落在 $\le p$),即
+$$F_U(p)=F_{us}(p)\ge c+1.$$
+因 $uL$ 与 $us$ 共享 $u$,
+$$F_{uL}(p)=F_U(p)+F_L(p)\ge F_U(p)\ge c+1,$$
+所以 $uL$ 的第 $(c+1)$ 小单位落在下标 $\le p$,即 $\beta:=\sigma_L\le p$。于是 $B_L=x_\beta$ 满足 $\beta\le p$,即
+$$B_s=x_p\preceq_{\rm DRL}x_\beta=B_L.\qquad\blacksquare$$
+
+注:证明**只用** overflow($B_s\succ B_0$)与 $u$ 共享,没有用 $s\in S$、$L\in G(J)$、$c\le2$ 中的任何一条。所以 $d=1$ 的 C2 是 band 几何的纯组合事实。
+
+### 50.2 判别实验:困难全在 $d\ge2$,且 $d\ge2$ 必须用结构
+
+写纯组合测试 `pure_sigma.c`:**无任何理想**,随机 $U$、随机同次 $S\prec_{\rm DRL}L$、随机 $c\in\{0,1,2\}$、$1\le d\le e$,只在 overflow($B_s\succ B_0$)上统计 $\sigma_s\ge\sigma_L$ 与 C2($B_s\preceq\max(B_L,B_0)$)。
+
+| $n$ | overflow | $\sigma_s<\sigma_L$ 失败 | 其中 $d=1$ | 其中 $d\ge2$ | C2 失败 |
+|---:|---:|---:|---:|---:|---:|
+| 8  | 1.16M | 63829 | **0** | 63829 | 117996 |
+| 10 | 1.19M | 75978 | **0** | 75978 | 131983 |
+| 12 | 0.96M | 68441 | **0** | 68441 | 113316 |
+
+**结论(决定性)**:
+- $d=1$:$\sigma_s\ge\sigma_L$ **零失败**(印证 §50.1 的无条件性)。
+- $d\ge2$:纯随机下 $\sigma_s\ge\sigma_L$ 与 C2 **大量失败(~10%)**。故 $d\ge2$ 的 C2 **绝非**纯组合,**必须**用理想结构。
+
+对照:真实理想数据(`check_d1.c`,$\operatorname{codeg}(uL)\le2$)上逐 $d$ 统计 overflow / handoff_bad:
+
+| | $d{=}1$ | $d{=}2$ | $d{=}3$ | $d{=}4$ | $d{=}5$ |
+|---|---|---|---|---|---|
+| $n{=}10$ overflow | 202 | 1338 | 685 | 87 | — |
+| $n{=}10$ handoff_bad | 0 | 0 | 0 | 0 | — |
+| $n{=}12$ overflow | 64 | 369 | 281 | 178 | 1 |
+| $n{=}12$ handoff_bad | 0 | 0 | 0 | 0 | 0 |
+
+真实数据上 $d\ge2$ 的 handoff 全部成立(结构兜住),残余主体在 $d=2,3$。**所以 C2 现在精确地化为:在 $2\le d\le e$ 上用结构证 handoff。**
+
+### 50.3 机制:DRL ≠ dominance,crossing = non-dominance 是硬核
+
+为什么 dominance 情形(§35.3 prop:domsuff)易而 crossing 难?给一个干净图像。
+
+**σ 在 raising-move 下单调不降(纯组合,严格)**:一次 **raising move** 把一个单位从下标 $a$ 移到更高下标 $b>a$:$M'=M\,x_b/x_a$。它把 $F_M(q)$ 在 $q\in[a,b)$ 上减 1、别处不变。故 $\sigma_{M'}=\min\{q:F_U(q)+F_{M'}(q)\ge c+d\}\ge\sigma_M$(阈值在该段更难达到,$\sigma$ 只能右移)。
+
+**raising move 生成的是 dominance 序,不是 DRL**:从 $L$ 反复 raising 可达的单项式集 = $\{m:\deg m=e,\ F_m(q)\le F_L(q)\ \forall q\}$ = 被 $L$ majorize 的集 = **dominance** 关系。所以:
+- **dominance 情形**($F_S(q)\le F_L(q)\,\forall q$):$s$ 由 $L$ 经纯 raising 可达 ⟹ σ 单调给 $\sigma_s\ge\sigma_L$ **免费**,handoff 成立。这正是 prop:domsuff 覆盖的情形,σ-图像给了它一个新的一行证明。
+- **crossing 情形**(non-dominance,$\exists q:F_S(q)>F_L(q)$):$s$ **不可**由 $L$ 经纯 raising 到达(DRL 比 dominance 细),$L\to s$ 的路径必含 **lowering move**(把单位移到更低下标),而 lowering 使 σ **下降**。于是 σ 沿路径可升可降,净效果不再自动非负——**这就是 crossing residual 是硬核的根本原因**。
+
+**推论(把结构需求钉死)**:既然 lowering move 才制造 σ 下降的风险,而 $s\in S$、$L\in G(J)$、$\operatorname{codeg}(uL)=c$ 必须恰好限制这些 lowering 的幅度,使净 σ 不反超。§50.2 的随机实验里 $c$ 是自由取的(未绑定 codeg),正是缺了这条绑定,$d\ge2$ 才失败。所以**下一步要证的就是:当 $c=\operatorname{codeg}(uL)$、$s\in S$、$L\in G(J)$ 时,$L\to s$ 路径中 lowering 造成的 σ 下降被 raising 的 σ 上升抵消到 $\ge0$。**
+
+### 50.4 $d\ge2$ 的下一步(具体)
+
+定位已经很干净。对 $2\le d\le e$、overflow 情形,要证 $\sigma_s\ge\sigma_L$(再加 σ 相等时的递归)。$d=1$ 之所以免结构,是因为 overflow 强迫 band 顶 $p<s_{(1)}$、band 内**全是 $u$-单位**;$d\ge2$ 时 band 可混入 $s$-单位,"$u$ 共享 ⟹ $\sigma_L\le p$"的一步断裂。补救方向:
+
+1. **绑定 $c=\operatorname{codeg}(uL)$**:这是随机实验缺的唯一结构。$\operatorname{codeg}(uL)=c$(恰好)给出 $m_L=P_{\ell_0}(uL)\in S$ 但 $P_{\ell_0+1}(uL)\notin S$——即 $uL$ 低位"刚好"差一步标准。把这条紧性翻译成对 $L\to s$ 路径上 lowering 总幅度的上界。
+2. **按 band 顶端单位的来源(u 或 s)分情形递归**:若 $B_s$ 顶端单位来自 $u$,沿用 $d=1$ 论证把它对齐到 $B_L$ 的 $u$-单位并剥离,递归到 $d-1$;若来自 $s$,用 $s\in S$ 的 γ-约束控制。需要一个保持 overflow 不变量的剥离引理。
+3. **先做 $d=2,c=1$**:最小的非平凡格,验证上面机制。
+
+### 50.5 诚实状态(本节)
+
+- **新增严格结果**:C2 at $d=1$ 无条件证明(§50.1);σ 在 raising-move 下单调(§50.3),并由此给 dominance 情形一行证明。
+- **新增定位**:C2 困难精确在 $d\ge2$,且 $d\ge2$ 必须用结构(随机 vs 真实对照,§50.2);缺的结构精确为 $c=\operatorname{codeg}(uL)$ 的绑定。
+- **未合拢**:$2\le d\le e$ 的 handoff 仍开放。但残余形态比 §49 更清楚:不是"一条 band 不等式",而是"crossing 路径上 lowering 的 σ-下降被结构限制",且 $d=1$ 已切走、机制(raising/lowering)已明。
+
+### 50.6 验证命令
+
+```bash
+gcc -O2 -std=c11 pure_sigma.c -o pure_sigma          # 纯组合:d=1 零失败,d>=2 ~10% 失败
+./pure_sigma 10 5000000
+gcc -O2 -std=c11 check_d1.c -lm -o check_d1          # 真实理想:逐 d 的 overflow/handoff_bad
+./check_d1 10 1500000
+```
+
+
+---
+
+## §51. 统一:C2 的 $d\ge2$ 硬核 = Lemma A 残尾 = $Q_s\ne Q_L$ 降维核;再关一个子情形,钉死 residual-B
+
+延续 §50。本轮把两个一直分开处理的开放块**合并成一个**,并在合并后的核里再切掉一个可证子情形,使真正剩下的东西变成一条**单一的、关于无-$x_n$ band 的降维命题**。随附验证程序新增 QSPLIT / RESIDB 两组统计(在 `verify_c2_crossing_tail.c` 内)。
+
+### 51.1 统一:两个残尾是同一个对象
+
+记 $Q_s=P_{\ell_0-d}(us)$、$Q_L=P_{\ell_0-d}(uL)$(各自顶 $\ell_0-d$ 部分)。§38.3 已证 Lemma A 的可证情形是 $Q_s=Q_L$(公共顶补除法,$\ge97\%$),残尾是 $Q_s\ne Q_L$。现测 C2 的 crossing residual:
+
+| $n$ | crossing | $Q_s=Q_L$ | $Q_s\ne Q_L$ | $e_n(uL)<\ell_0-d$ |
+|---:|---:|---:|---:|---:|
+| 10 | 40 | 0 | 40 | 40 |
+| 12 | 41 | 0 | 41 | 41 |
+
+**全部 $Q_s\ne Q_L$,且 $e_n(uL)<\ell_0-d$ 恒成立**。后者正是 §38.3 给出的 $Q_s\ne Q_L$ 的充要刻画($uL$ 的 $x_n$ 全在顶 $\ell_0-d$ 部分 ⟹ $B_L=P^{\rm sm}_d(m_L)$ 无 $x_n$)。所以:
+
+> **C2 的 $d\ge2$ 硬核与 Lemma A($d>e$)的残尾是同一个对象**——$Q_s\ne Q_L$(等价 $e_n(uL)<\ell_0-d$)的"顶部无 $x_n$ ⟹ 降维"情形。关一条降维引理,$C2$ 与 Lemma A **同时**闭合。这把历史上两条平行缺口合成一条。
+
+### 51.2 再关一个子情形:$B_s$ 的 band 含 $x_n$ ⟹ handoff 立得
+
+在统一核内($e_n(uL)<\ell_0-d$,即 $B_L$ 无 $x_n$),按 $us$ 的 $x_n$ 含量再分:
+
+**命题(x_n-in-band 子情形,已证)**:若 $e_n(us)>\ell_0-d$(即 $B_s$ 的 band 含 $x_n$),则 $\sigma_s=n>\sigma_L$,故 $B_s\prec_{\rm DRL}B_L$,handoff 成立。
+**证**:$e_n(us)>\ell_0-d=\delta-(c+d)$ 意味着 $us$ 的 $x_n$ 多到占据 rank $>c+d$ 之外还溢入窗口,band 顶端单位是 $x_n$,即 $\sigma_s=n$。而 $e_n(uL)<\ell_0-d$ 给 $\sigma_L<n$。最高下标 $n$ 处 $B_s$ 有 $x_n$、$B_L$ 无 ⟹ $B_s\prec_{\rm DRL}B_L$。∎
+
+数值(RESIDB,$us\_xn\_in\_band$):$n=10$ 有 3/40、$n=12$ 有 3/41 落在此子情形,均由上命题直接关闭。
+
+### 51.3 真正剩下的核:无-$x_n$ band 的降维(residual-B)
+
+切掉 51.2 后,残余($us\_xnfree$:$n=10$ 37/40、$n=12$ 38/41)同时满足:
+$$e_n(us)\le\ell_0-d\quad(\text{两个 band 都无 }x_n),\qquad e_n(us)>e_n(uL)\ (\text{40/40, 38/41}).$$
+
+**关键结构观察(为什么这是硬核)**:$e_n(us)>e_n(uL)$ 时,全局关系 $us\prec_{\rm DRL}uL$ **完全由最高下标 $x_n$ 决定**(DRL 先比 $x_n$,$us$ 的 $x_n$ 更多 ⟹ 立即 $us\prec uL$)。于是把 $x_n$ 剥掉后:
+$$us'=us/x_n^{e_n(us)},\qquad uL'=uL/x_n^{e_n(uL)},\qquad \deg us'<\deg uL',$$
+**等次不变量丢失**,且全局 DRL 对无-$x_n$ 的 band **不再给任何信息**(它已被 $x_n$ 用光)。而两个 band 恰好都活在 $x_1,\dots,x_{n-1}$ 上、用同一窗口 $I_{c,d}$:
+$$B_s=W_{c,d}(us'),\qquad B_L=W_{c,d}(uL'),\qquad \deg us'<\deg uL'.$$
+
+这就是 §39.2 递归卡住的 **residual-B** 的精确形态,现在对 C2 与 Lemma A 统一成立。结论:
+
+> **统一硬核(待证)** 设 band 无 $x_n$、$e_n(us)>e_n(uL)$。则全局 DRL 不可用,$B_s\preceq_{\rm DRL}B_L$ **必须**单独由结构 $s\in S$、$L\in G(J)$、$c=\operatorname{codeg}(uL)$ 在 $n-1$ 变量上控制。
+
+### 51.4 这正是 Kouba–Neiger–Safey 的 $x_n$-高度地盘
+
+§26–28 已指认:$x_n$ 方向的剥离 + 超平面截面 = KNS(2026)的方法。§51.3 把缺口精确钉在"$x_n$ 剥离后等次破缺、需用 $n-1$ 变量结构控制无-$x_n$ band",**这恰是 KNS 的 $x_n$-高度公式(§27.2 已用其方法拿到一个严格公式)的天然适用处**。所以下一步最该做的是:
+
+1. **接 KNS 的 $x_n$-高度**:把 $B_s,B_L$ 的无-$x_n$ 比较表达成 $us',uL'$ 在 $n-1$ 变量 gin(超平面截面)里的标准性/γ-比较,用 KNS 对 $x_n$-height 的递推补上丢失的等次信息。
+2. **降维归纳的正确不变量**:不是"等次 $MS\preceq ML$",而是 §40.3 提的"携带 lower-index witness"——即记录无-$x_n$ band 已经在更低下标判定 $B_s\prec B_L$ 的证据,允许 $x_n$ 处等次破缺。§51.3 表明 witness 必须来自 $n-1$ 变量结构而非全局 DRL。
+3. **先做 $d=2,c=1$**:此时 $\ell_0-d=\delta-3$,无-$x_n$ band 只有 2 个单位,$us'$ 比 $uL'$ 少 $e_n(us)-e_n(uL)$ 次。最小格,可手算检验 KNS 递推是否补上等次缺口。
+
+### 51.5 诚实状态(本节)
+
+- **统一(实质简化)**:C2 的 $d\ge2$ 硬核 = Lemma A 残尾 = $Q_s\ne Q_L$ 降维核(验证 40/40、41/41,含 $e_n(uL)<\ell_0-d$ 充要刻画)。两条平行缺口合一。
+- **新关子情形**:$B_s$ band 含 $x_n$ ⟹ handoff 立得(§51.2,严格)。
+- **钉死的核**:residual-B = 无-$x_n$ band + $e_n(us)>e_n(uL)$,全局 DRL 被 $x_n$ 吃光,须由 $n-1$ 变量结构控制。明确对接 KNS $x_n$-高度。
+- **未合拢**:统一硬核仍开放。但它现在是**一条**命题(而非两条)、形态精确(降维 + 等次破缺 + 结构控制)、且有现成工具方向(KNS)。这比 §50 又前进一格:从"$d\ge2$ 需结构"细化到"$x_n$ 剥离后的无-$x_n$ band 须由超平面截面结构控制"。
+
+### 51.6 验证命令
+
+```bash
+gcc -O2 -std=c11 verify_c2_crossing_tail.c -lm -o verify_c2_crossing_tail
+./verify_c2_crossing_tail 10 1500000 0   # QSPLIT: Qs!=QL 全；RESIDB: us_xnfree 主体 + en(us)>en(uL)
+```
+输出(摘):`QSPLIT Qs==QL=0 Qs!=QL=40 | en(uL)<l0-d=40`；`RESIDB us_xnfree=37 us_xn_in_band=3 | en(us)>en(uL)=40`。
+
+
+---
+
+## §52. 上界审计:residual-B 是唯一缺口(假设 MS+Fröberg);residual-B 深挖 + crossing 盈余有界
+
+本节回答一个关键问题:**若假设 Moreno–Socías(MS)与 Fröberg,且只要 $\operatorname{poly}(n)\cdot2^n$ 上界,缺口是否只剩 §51 的 residual-B?** 审计结论:**是**,而且上界链比之前认为的更干净(sharp 阴影/CL 都不需要)。然后深挖 residual-B,给出机制解释与一个数值 lead(crossing 盈余 $\le2$)。
+
+### 52.1 纯上界链的逐环节审计(假设 MS+Fröberg)
+
+目标:$\max_d|C_d|\le\operatorname{poly}(n)\cdot2^n$(累计峰值同量级)。
+
+| # | 环节 | 状态 | 说明 |
+|---|---|---|---|
+| 1 | 种子(lcm)codeg $\le2$ | **严格** | EK(stable gin,Galligo)给 lcm $=x_j\mathrm{LT}(g)$;$\mathrm{LT}(g)=x_a m$($m\in S$);故 lcm $=x_jx_a m$,$m\in S$,$\deg m=\deg\ell-2$ ⟹ codeg $\le2$ |
+| 2 | codeg $\le2$ ⟹ pivot $\in\partial^{+\le2}(S)$ | **严格** | 即 codeg 定义 |
+| 3 | $\lvert\partial^{+\le2}(S_{d-k})\rvert\le n^2\cdot2^n$ | **严格(平凡)** | 每步上阴影至多乘 $n$ 个变量;$\lvert S\rvert=2^n$。**不需 CL/sharp 阴影** |
+| 4 | $\lvert\Lambda_d\rvert\le n\lvert G\rvert\le n^2\cdot2^n$ | **严格(平凡)** | 每生成元 $=x_i\cdot(\text{标准})$ ⟹ $\lvert G\rvert\le n\lvert S\rvert=n2^n$ |
+| 5 | 可达 pivot 由种子经 swap 闭包得到 | **严格** | symbolic preprocessing 的每步重写 $u\mathrm{LT}(g)\to us$ 即 generator-reduction swap;rank 降终止(§2.4) |
+| 6 | **monotonicity**:swap 下 codeg 不增 | **缺** | ⟹ 归纳全 pivot codeg $\le2$(配 1+5)|
+| 7 | monotonicity ⟸ {C2 + Lemma A} | **严格** | §37.3,用 γ-刻画 + Case A(均严格)|
+| 8 | C2、Lemma A 的可证情形 | **严格** | Case 1(公共顶补除法)、Case 2($x_n$)、dominance、$x_n$-富集、高次消去(§35–38, §51.2)|
+| 9 | C2 残尾 = Lemma A 残尾 = residual-B | **严格(已验证)** | §51,$Q_s\ne Q_L\iff e_n(uL)<\ell_0-d$,40/40、41/41 |
+
+**结论**:在 MS+Fröberg 下,纯 $\operatorname{poly}(n)\cdot2^n$ 上界的**唯一未证环节是 #6 monotonicity,而它已归约到唯一的 residual-B**(#9)。其余全严格,且阴影/lcm 计数是**平凡 poly·2^n**(无需 §17.3 的 sharp $\sqrt n$ 估计、无需 Clements–Lindström)。
+
+> 换言之:**关掉 residual-B 这一条,$\operatorname{poly}(n)\cdot2^n$ 上界即完成。** Fröberg 只用于保证 Hilbert 函数 / Fact gammaclean 的 $\gamma_d\in J$(§38.4),MS 用于保证楼梯 = almost-revlex(桥到真实 F4 + γ-刻画)。
+
+### 52.2 residual-B 的机制(为什么 $B_s\prec B_L$)
+
+真实样例($c=1,d=3$):$u=x_8x_9$,$L=x_3x_6x_6$,$s=x_5x_5x_{10}$。
+- $us=x_5x_5x_8x_9x_{10}$,$B_s=x_5x_8x_9$;$uL=x_3x_6x_6x_8x_9$,$B_L=x_6x_6x_8$。
+- 判定下标 $r=9$:$x_9$(来自 $u$)在 $us$ 排 rank 4(进窗口 $\{2,3,4\}$),在 $uL$ 排 rank 5(被 $L$ 的 $x_3x_6x_6$ 挤出)。故 $B_s$ 顶端 $=x_9>x_8=B_L$ 顶端 ⟹ $B_s\prec_{\rm DRL}B_L$。
+
+**机制**:residual-B 的定义条件 $e_n(s)>e_n(L)$ 意味着 $s$ 把一个单位花在 $x_n$(高位),故 $s$ 在低区比 $L$ **少一个单位**($s'=x_5x_5$ 两个 vs $L'=x_3x_6x_6$ 三个)。于是 $uL$ 的 band 被低位填得更满、更早饱和,把 $u$ 的高位单位($x_9$)挤出窗口;而 $us$ 的 band 仍能接住它。这就是 §47.4 right-edge-cut 的来源解释。
+
+### 52.3 关键负面观察:$x_n$ 剥离不增信息
+
+residual-B 想"剥 $x_n$ 降维",但**前缀在 $<n$ 处不变**:$F_{s'}(q)=F_s(q)$、$F_{L'}(q)=F_L(q)$ 对 $q<n$,而 $\sigma_L<n$(band 无 $x_n$)。故 residual-B 化回与 §49 同一道墙:
+$$\text{需证 }\ H(\sigma_L-1)\le\epsilon,\quad H(q)=F_S(q)-F_L(q),\ \epsilon=(c+d-1)-F_{uL}(\sigma_L-1)\ge0.$$
+即:**crossing 的早期盈余($s$ 低位领先 $L$)必须在 band 饱和点 $\sigma_L$ 之前被 $L$ 追平。** $e_n(s)>e_n(L)$ 这个 residual-B 标签只是把这件事重新命名,没有提供新杠杆。真正的杠杆必须来自 $s\in S$、$L\in G(J)$、$c=\operatorname{codeg}(uL)\le2$。
+
+### 52.4 数值 lead:crossing 盈余 $\le2$
+
+测 crossing residual 的盈余峰 $\max_t H(t)$:
+
+| $n$ | crossing | $\max H=1$ | $\max H=2$ | $\max H\ge3$ | $\max H\le c$ |
+|---:|---:|---:|---:|---:|---:|
+| 10 | 40 | 38 | 2 | **0** | 39/40 |
+| 12 | 41 | 34 | 7 | **0** | 38/41 |
+| 14 | 29 | 20 | 9 | **0** | 26/29 |
+
+**$\max H\le2$ 恒成立**(无一 $\ge3$),即 $s$ 对 $L$ 的低位领先至多 2 个单位——恰是 codeg $\le2$ regime 的常数界。注意逐例 $\max H\le c$ **不**严格(有 $\max H=2,c=1$),所以界是常数 2、非逐例 $c$。
+
+**这是最有希望的攻击线**:若能(i)从 $s\in S$、$L\in G(J)$、$c\le2$ 严格证 $\max H\le2$(盈余有界),并(ii)证盈余 $\le2$ 必在 $\sigma_L$ 前被追平,则 residual-B 闭合。(ii) 仍需把"追平点 $<\sigma_L$"与 $c\le2$ 的窗口位置联系起来——这是 §52.3 那道墙的最后一击,也是唯一还需 $n-1$ 变量结构(KNS $x_n$-高度,§27)的地方。
+
+### 52.5 诚实状态(本节 + 总）
+
+- **审计结论(实质)**:在 MS+Fröberg 下,纯 $\operatorname{poly}(n)\cdot2^n$ 上界的**唯一缺口 = residual-B**;其余环节全严格,阴影/lcm 计数平凡 poly·2ⁿ(连 CL 都省了)。
+- **residual-B 机制已明**($x_n$ 占用 ⟹ 低位少一单位 ⟹ $uL$ band 早饱和 ⟹ right-edge-cut)。
+- **lead**:crossing 盈余 $\le2$(数值,$n\le14$),把残余收成"有界盈余在 band 内被追平"。
+- **未合拢**:residual-B 仍开放。两步未证:(i) 盈余 $\le2$ 的严格证明;(ii) 盈余在 $\sigma_L$ 前被追平,需 KNS $x_n$-高度补 $n-1$ 变量结构。
+- **难度定级**:这是一条关于 strongly-stable + almost-revlex + codeg≤2 的**有限组合命题**,盈余被常数压住,**复杂但有希望**;不是命名猜想。距完整 $\operatorname{poly}(n)\cdot2^n$ 上界只差这一条(及其两小步)。
+
+### 52.6 验证命令
+
+```bash
+gcc -O2 -std=c11 verify_c2_crossing_tail.c -lm -o verify_c2_crossing_tail
+./verify_c2_crossing_tail 10 1500000 0   # MAXH: maxH 全 <=2；QSPLIT/RESIDB 同 §51
+```
+
+
+---
+
+## §53. 盈余界的真相:$\max H\le2$ 非纯结构(否证),不可分离——residual-B 的困难在 $u$-codeg 耦合
+
+本节是对 §52.4 那条 lead 的**诚实修正**。结论:盈余界 $\max H\le2$(乃至 $\le c+1$)在 residual 里成立,但**不是** $(s\in S,L\in G)$ 的可分离事实,故"先证盈余界、再证追平"这个分解**不可行**。困难不可约地在 codeg/overflow 对 $u$ 的耦合里。验证程序新增 MAXHcp1 统计。
+
+### 53.1 否证:$\max H\le2$ 不是纯 $(s,L)$ 结构事实
+
+枚举**所有**同次配对 $s\in S_e$、$L\in G_e$(almost-revlex 自动 $s\prec_{\rm DRL}L$),量 $\max H=\max_q(F_S(q)-F_L(q))$(程序 `maxh_struct.c`):
+
+| $n$ | 配对数 | $\max H$ 全局最大 | 反例 |
+|---:|---:|---:|---|
+| 6 | 459 | 2 | — |
+| 8 | 5067 | **3** | $s=x_6^3x_8^2,\ L=x_7^4x_8$:$F_S(6)=3,F_L(6)=0$ |
+| 10 | 59090 | **4** | $s=x_8^4x_{10}^2,\ L=x_9^5x_{10}$:$F_S(8)=4,F_L(8)=0$ |
+
+$\max H$ **随 $n$ 增长**($2,3,4$)。故 $\max H\le2$(以及任何 $\le c+1\le3$ 的常数界)作为纯 $s\in S,L\in G$ 命题**为假**。机制:当 $s$ 的低位单位集中在某个中等下标($x_6^3,x_8^4$)、而 $L$ 的单位全在更高下标($x_7^4,x_9^5$),$s$ 在该处可领先任意多(随 $\binom{}{}$ 尺度)。
+
+### 53.2 residual 里 $\max H\le c+1$ 成立——但靠完整过滤
+
+在真实 crossing residual(过滤 codeg$\le2$ + overflow + crossing)里:
+
+| $n$ | crossing | $\max H\le c+1$ | $\max H>c+1$ |
+|---:|---:|---:|---:|
+| 10 | 40 | 40 | **0** |
+| 12 | 41 | 41 | **0** |
+| 14 | 29 | 29 | **0** |
+
+$\max H\le c+1$ **零反例**(比 $\le2$ 更干净,把盈余绑到 codeg)。但 §53.1 的反例配对($\max H=4$)就是合法的 $s\in S,L\in G$,只是**进不了** codeg$\le2$ 的 crossing residual。所以 $\max H\le c+1$ 也**不是**纯 $(s,L)$ 事实——它是完整 residual 过滤(含 $u$、codeg、overflow、crossing)的**推论**。
+
+### 53.3 推论:干净分解不可行
+
+§52.4 设想的两步攻法——
+> (i) 纯 $s,L$ 证 $\max H\le2$;(ii) 证盈余在 $\sigma_L$ 前被追平 ——
+
+**第 (i) 步不成立**(§53.1 否证)。盈余界本身就依赖 $u$/codeg,无法与"追平"分离。这把 residual-B 的困难**钉死在 $u$-codeg 耦合**:不存在"先看 $s$ 对 $L$ 的盈余、再看窗口"的两段式;codeg$(uL)\le2$ 必须**同时**控制盈余大小**和**追平位置。
+
+具体说,真正要证的仍是 §52.3 那一条,且**必须整体处理**:
+$$\boxed{\ \text{codeg}(uL)\le2,\ s\in S,\ L\in G(J)\ \Longrightarrow\ H(\sigma_L-1)\le\epsilon\ }$$
+其中 $H,\sigma_L,\epsilon$ 都同时含 $u$。这正是为什么 §38.1 说"band 不等式不是纯组合的"——现在更精确:它甚至**不能拆成"盈余 + 追平"两个子命题**,因为盈余界已经要用 $u$-codeg。
+
+### 53.4 这把攻法逼向 KNS $x_n$-高度(唯一剩下的工具方向)
+
+既然不能在 $(s,L)$ 层面分离,唯一的结构输入只能来自 codeg$(uL)\le2$ 对 $u$ 的整体约束 + $n-1$ 变量的超平面截面结构。这正是 §27 已动用、§51.4 指认的 **Kouba–Neiger–Safey $x_n$-高度** 方法的适用处:把 $H(\sigma_L-1)\le\epsilon$ 表达成 $us,uL$ 在 $x_n$-分层 / 超平面截面 gin 里的标准性比较,用 KNS 对 $x_n$-height 的递推**整体**控制(而非分离盈余)。
+
+下一步具体:
+1. **放弃分离盈余**,直接对 $\{$codeg$(uL)\le2$,overflow,crossing$\}$ 用 KNS 的 $x_n$-height 公式(§27.2 已拿到一个严格版本),目标证 $H(\sigma_L-1)\le\epsilon$。
+2. **$d=2,c=1$ 手算**:此时窗口 $\{2,3\}$、盈余 $\le c+1=2$,是检验 KNS 递推能否整体补上的最小格。
+3. **或换路**:绕开 band/handoff,回到 §33.4 的 codeg-gcd 骨架(取 $D=m_L$,证 $\gcd(D,us)$ 可由 $us$ 剩余预算扩回 $\deg D$),看是否在 residual-B(无-$x_n$ band)下更易闭合——这条没用 band 不等式,可能避开耦合。
+
+### 53.5 诚实状态(本节 + 修正)
+
+- **否证(实质)**:$\max H\le2$ 非纯 $(s,L)$ 结构事实($n=8,10$ 反例,$\max H=3,4$)。修正了 §52.4 的乐观 lead。
+- **refinement**:residual 里 $\max H\le c+1$ 成立(零反例),但同样依赖完整过滤、不可分离。
+- **结构结论**:residual-B 困难在 $u$-codeg 耦合,**不能拆成"盈余 + 追平"**;必须整体证 $H(\sigma_L-1)\le\epsilon$。这比 §52 更深一层地刻画了为什么难。
+- **未合拢**:residual-B 仍开放。本节排除了一条分解路线(纯盈余界),把工具方向收窄到 KNS $x_n$-height 的整体处理,或 §33.4 codeg-gcd 骨架。
+- **难度复评**:仍是有限组合命题、不是命名猜想,但本节显示它**抗拒分解**——这是"复杂但有希望"里偏"复杂"的一面。要么 KNS 整体递推奏效,要么需要一个同时驾驭盈余与追平的新不变量。
+
+### 53.6 验证命令
+
+```bash
+gcc -O2 -std=c11 maxh_struct.c -lm -o maxh_struct   # 否证:n=8 maxH=3, n=10 maxH=4
+./maxh_struct 10
+gcc -O2 -std=c11 verify_c2_crossing_tail.c -lm -o verify_c2_crossing_tail
+./verify_c2_crossing_tail 10 1500000 0              # MAXHcp1: maxH<=c+1 零反例
+```
